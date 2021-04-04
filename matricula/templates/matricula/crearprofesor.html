@@ -1,0 +1,24 @@
+{% extends "matricula/layout.html" %}
+
+{% block body %}
+
+    <h2>Crear Profesor</h2>
+
+    <form action="{% url 'crearprofesor' %}" method="post">
+        {% csrf_token %}
+        <div class="form-group">
+            <input autofocus class="form-control" type="text" name="nombre" placeholder="Nombres">
+        </div>
+        <div class="form-group">
+            <input autofocus class="form-control" type="text" name="apellido" placeholder="Apellidos">
+        </div>
+        <div class="form-group">
+            <input autofocus class="form-control" type="number" name="dni" placeholder="DNI">
+        </div>
+        <div class="form-group">
+            <input autofocus class="form-control" type="email" name="email" placeholder="Email">
+        </div>
+        <input class="btn btn-primary" type="submit" value="Crear">
+    </form>
+
+{% endblock %}
