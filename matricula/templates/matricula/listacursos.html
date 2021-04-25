@@ -1,42 +1,9 @@
 {% extends "matricula/layout.html" %}
 
 {% block body %}
-
-<div id="Form">
-    <svg id="exitForm" xmlns="http://www.w3.org/2000/svg" width="15.849" height="15.848" viewBox="0 0 30.849 30.848" onclick="changeWindow()">
-    <path id="Icon_metro-cross" data-name="Icon metro-cross" d="M33.138,26.711h0l-9.358-9.358,9.358-9.358h0a.966.966,0,0,0,0-1.363L28.717,2.21a.967.967,0,0,0-1.363,0h0L18,11.568,8.637,2.21h0a.966.966,0,0,0-1.363,0L2.852,6.631a.966.966,0,0,0,0,1.363h0l9.358,9.358L2.852,26.711h0a.966.966,0,0,0,0,1.363l4.421,4.421a.966.966,0,0,0,1.363,0h0L18,23.136l9.358,9.358h0a.966.966,0,0,0,1.363,0l4.421-4.421a.966.966,0,0,0,0-1.363Z" transform="translate(-2.571 -1.928)" fill="#b7b7b7"/>
-    </svg>
-    <h2 id="register">Registrar administrador</h2>
-
-    {% if message %}
-        <div>{{ message }}</div>
-    {% endif %}
-
-    <form action="{% url 'register' %}" method="post">
-        {% csrf_token %}
-        <div class="form-group">
-            <input class="form-control" autofocus type="text" name="username" placeholder="Nombre de Usuario">
-        </div>
-        <div class="form-group">
-            <input class="form-control" type="text" name="first_name" placeholder="Nombres de administradores" maxlength="25">
-        </div>
-        <!-- <div class="form-group">
-            <input class="form-control" type="text" name="last_name" placeholder="Apellidos de administradores" maxlength="25">
-        </div> -->
-        <div style="height: 20px;"></div>
-        <div class="form-group">
-            <input class="form-control" type="password" name="password" placeholder="Password">
-        </div>
-        <div class="form-group">
-            <input class="form-control" type="password" name="confirmation" placeholder="Confirm Password">
-        </div>
-        <input class="btn btn-primary" type="submit" value="Register">
-    </form>
-</div>
-<div id="blackScreen"></div>
 <!-- buscar y registrar nuevo -->
 <input id="buscar" type="number" placeholder="Búsqueda" class="form-control">
-<button id="options" class="btn btn-success" onclick="changeWindow()">NUEVO ADMINISTRADOR</button>
+<button id="options" class="btn btn-success" onclick="changeWindow()">NUEVO CURSO</button>
 </div>
 <!-- tabla de datos -->
 <div>
@@ -44,11 +11,14 @@
     <thead>
             <tr>
                 <th scope="col">
-                    Usuario
+                    Nombre del curso
                 </th>
                 <th scope="col">
-                    Nombre del administrador
-                </th>                
+                    Profesor
+                </th>
+                <th scope="col">
+                    Vacantes
+                </th>
                 <th scope="col">
                     Visibilidad
                 </th>
@@ -58,16 +28,19 @@
             </tr>
         </thead>
         <tbody>
-            {% for administrador in admins %}
+            {% for curso in cursos %}
             <tr>
                 <td scope="row">
-                    {{administrador.username}} 
+                    {{curso.nombreCurso}} 
                 </td>
                 <td scope="row">
-                    {{administrador.first_name}} {{administrador.last_name}}  
-                </td>                
+                    {{curso.profesor.nombre}} {{curso.profesor.apellido}}  
+                </td>
                 <td scope="row">
-                    {% if administrador.is_active is True %} 
+                    {{curso.vacantes}} 
+                </td>
+                <td scope="row">
+                    {% if curso.activo is True %} 
                     <svg xmlns="http://www.w3.org/2000/svg" width="25" height="15.846" viewBox="0 0 36 26.846">
                         <path id="Icon_awesome-check" data-name="Icon awesome-check" d="M12.227,30.9.527,19.2a1.8,1.8,0,0,1,0-2.546L3.073,14.1a1.8,1.8,0,0,1,2.546,0L13.5,21.986,30.382,5.1a1.8,1.8,0,0,1,2.546,0L35.473,7.65a1.8,1.8,0,0,1,0,2.546l-20.7,20.7A1.8,1.8,0,0,1,12.227,30.9Z" transform="translate(0 -4.577)"/>
                       </svg>                      
@@ -88,11 +61,60 @@
     </table>
 </div>
 <div id="warningList"></div>
-
 <script>
     const changeWindow = () => {
-        window.location.pathname = '../listaadmins';
+        window.location.pathname = '../crearcurso';
     }
 </script>
+<script type="text/javascript">          
+    function toggle_visibility(id) {
+        var e = document.getElementById(id);
+        if (e.style.display == 'block')
+            e.style.display = 'none';
+        else
+            e.style.display = 'block';
+    }
 
+    var textbuscar = document.getElementById("buscar");
+    textbuscar.onkeyup = function () {
+        const key = event.key;
+        if (key === "Backspace" || key === "Delete") {
+            document.getElementById("buscar").value = "";
+        }
+        buscar(this);
+    }    
+    function buscar(inputbuscar) {
+        var valorabuscar = (inputbuscar.value).toLowerCase().trim();
+        console.log(valorabuscar);
+        var tabla_tr = document.getElementById("tabla").getElementsByTagName("tbody")[0].rows;
+        var listaEncontrada = [];
+        for (var i = 0; i < tabla_tr.length; i++) {
+            var tr = tabla_tr[i];
+            var textotr = (tr.innerText).toLowerCase().substr(tr.innerText.length-10,8);                        
+            tr.className = (textotr.indexOf(valorabuscar) == 0) ? "mostrar" : "ocultar";
+            // if(tr.className == "mostrar") {
+            //     tr.style.display = "";
+            // }  
+            // else{
+            //     tr.style.display = "none"
+            // }
+            if(tr.className == "ocultar") {
+                tr.style.display = "none";
+            }  
+            else{
+                tr.style.display = ""
+            }                    
+            listaEncontrada.push(tr.className);
+        }                                       
+        var n = listaEncontrada.includes("mostrar");
+        console.log(n);
+        if (!n) {
+            document.getElementById("warningList").innerHTML = "*No se encontró ningún registro";
+        }
+        else{
+            document.getElementById("warningList").innerHTML = "";
+        }
+        console.log(document.getElementById("warningList").innerHTML);
+    }
+</script>
 {% endblock %}

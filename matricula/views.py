@@ -46,7 +46,7 @@ def logout_view(request):
 def register(request):
     if request.method == "POST":
         username = request.POST["username"]
-        email = request.POST["email"]
+        first_name = request.POST["first_name"]
 
         # Ensure password matches confirmation
         password = request.POST["password"]
@@ -58,7 +58,7 @@ def register(request):
 
         # Attempt to create new user
         try:
-            user = User.objects.create_user(username, email, password)
+            user = User.objects.create_user(username, first_name, password)
             user.save()
         except IntegrityError:
             return render(request, "matricula/register.html", {
@@ -67,21 +67,57 @@ def register(request):
         login(request, user)
         return HttpResponseRedirect(reverse("index"))
     else:
-        return render(request, "matricula/register.html")
+        return render(request, "matricula/register.html", {'admins': User.objects.all()})
 
 @login_required(login_url='/login')
-def crearAlumno(request):
+def listarAdmins(request):
+    return render(request, "matricula/listaadmins.html", {'admins': User.objects.all()})
+
+@login_required(login_url='/login')
+def crearAlumno(request):      
     if request.method == "POST":
         obj = Alumno()
         obj.nombre = request.POST["nombre"]
         obj.apellido = request.POST["apellido"]
-        obj.dni = request.POST["dni"]
-        obj.email = request.POST["email"]
-        obj.fechaNacimiento = request.POST["fechanacimiento"]
+        obj.dni = request.POST["dni"]        
 
         obj.save()
+        return HttpResponseRedirect("listaalumnos")
 
-    return render(request, "matricula/crearalumno.html")
+    return render(request, "matricula/crearalumno.html", {'alumnos': Alumno.objects.all()})
+
+@login_required(login_url='/login')
+def editarAlumno(request, id):
+    alumno = Alumno.objects.get(id=id)   
+    if request.method == "POST":
+        alumno.id = id
+        alumno.nombre = request.POST["nombre"]
+        alumno.apellido = request.POST["apellido"]
+        alumno.dni = request.POST["dni"]   
+
+        alumno.save()
+        return HttpResponseRedirect("../listaalumnos")
+
+    return render(request, "matricula/editaralumno.html", {'alumnos': Alumno.objects.all(), 'form':alumno})
+
+@login_required(login_url='/login')
+def desactivarAlumno(request, id):
+    alumno = Alumno.objects.get(id=id)   
+    if request.method == "POST":        
+        if(alumno.activo):
+            alumno.activo =  False    
+        else:
+            alumno.activo = True
+
+        alumno.save()
+        return HttpResponseRedirect("../listaalumnos")
+
+    return render(request, "matricula/desactivaralumno.html", {'alumnos': Alumno.objects.all(), 'form':alumno})
+
+@login_required(login_url='/login')
+def listarAlumnos(request):
+    return render(request, "matricula/listaalumnos.html", {'alumnos': Alumno.objects.all()})
+
 
 @login_required(login_url='/login')
 def crearProfesor(request):
@@ -90,11 +126,14 @@ def crearProfesor(request):
         obj.nombre = request.POST["nombre"]
         obj.apellido = request.POST["apellido"]
         obj.dni = request.POST["dni"]
-        obj.email = request.POST["email"]
 
         obj.save()
 
-    return render(request, "matricula/crearprofesor.html")
+    return render(request, "matricula/crearprofesor.html", {'docentes': Profesor.objects.all()})
+
+@login_required(login_url='/login')
+def listarDocentes(request):
+    return render(request, "matricula/listadocentes.html", {'docentes': Profesor.objects.all()})
 
 @login_required(login_url='/login')
 def crearCurso(request):
@@ -102,14 +141,19 @@ def crearCurso(request):
         obj = Curso()
         obj.nombreCurso = request.POST["nombre"]
         obj.profesor = Profesor.objects.get(id = int(request.POST["profesor"]))
-        obj.activo = True
-        
+        obj.activo = True        
 
         obj.save()
 
     return render(request, "matricula/crearcurso.html", {
-        'profesores': Profesor.objects.all()
-    })
+        'profesores': Profesor.objects.all(), 
+        'cursos': Curso.objects.all()
+        })
+    
+
+@login_required(login_url='/login')
+def listarCursos(request):
+    return render(request, "matricula/listacursos.html", {'cursos': Curso.objects.all()})
 
 @login_required(login_url='/login')
 def matricularAlumno(request):
