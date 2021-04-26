@@ -8,6 +8,7 @@ from django.http import JsonResponse
 import json
 from django.views.decorators.csrf import csrf_exempt
 from django.core.paginator import Paginator
+from django.contrib.auth.decorators import user_passes_test
 
 import datetime
 
@@ -42,11 +43,13 @@ def logout_view(request):
     logout(request)
     return HttpResponseRedirect(reverse("index"))
 
-
+@user_passes_test(lambda u: u.is_superuser)
 def register(request):
     if request.method == "POST":
         username = request.POST["username"]
+        email = request.POST["email"]
         first_name = request.POST["first_name"]
+        last_name = request.POST["last_name"]
 
         # Ensure password matches confirmation
         password = request.POST["password"]
@@ -58,14 +61,15 @@ def register(request):
 
         # Attempt to create new user
         try:
-            user = User.objects.create_user(username, first_name, password)
+            user = User.objects.create_user(username, email, password)
+            user.first_name = first_name
+            user.last_name = last_name
             user.save()
         except IntegrityError:
             return render(request, "matricula/register.html", {
                 "message": "Username already taken."
             })
-        login(request, user)
-        return HttpResponseRedirect(reverse("index"))
+        return HttpResponseRedirect(reverse("register"))
     else:
         return render(request, "matricula/register.html", {'admins': User.objects.all()})
 
