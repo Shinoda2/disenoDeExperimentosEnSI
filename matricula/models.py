@@ -28,12 +28,5 @@ class Curso(models.Model):
 class DetalleMatricula(models.Model):
     alumno = models.ForeignKey(Alumno, on_delete=models.CASCADE, related_name="alumno")
     curso = models.ForeignKey(Curso, on_delete=models.CASCADE, related_name="curso")
-
-class Semestre(models.Model):
-    nombreSemestre = models.CharField(max_length=255)
-
-class semestreCurso(models.Model):
-    semestre = models.ForeignKey(Semestre, on_delete=models.CASCADE, related_name="semestre")
-    curso = models.ForeignKey(Curso, on_delete=models.CASCADE, related_name="subject")
-    vacantes = models.IntegerField()
+    semestre = models.CharField(max_length=255, default="2020-0")
     
