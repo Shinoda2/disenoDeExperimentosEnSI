@@ -132,8 +132,37 @@ def crearProfesor(request):
         obj.dni = request.POST["dni"]
 
         obj.save()
+        return HttpResponseRedirect("listadocentes")
 
     return render(request, "matricula/crearprofesor.html", {'docentes': Profesor.objects.all()})
+
+@login_required(login_url='/login')
+def editarDocente(request, id):
+    docente = Profesor.objects.get(id=id)   
+    if request.method == "POST":
+        docente.id = id
+        docente.nombre = request.POST["nombre"]
+        docente.apellido = request.POST["apellido"]
+        docente.dni = request.POST["dni"]   
+
+        docente.save()
+        return HttpResponseRedirect("../listadocentes")
+
+    return render(request, "matricula/editardocente.html", {'docentes': Profesor.objects.all(), 'form':docente})
+
+@login_required(login_url='/login')
+def desactivarDocente(request, id):
+    docente = Profesor.objects.get(id=id)   
+    if request.method == "POST":        
+        if(docente.activo):
+            docente.activo =  False    
+        else:
+            docente.activo = True
+
+        docente.save()
+        return HttpResponseRedirect("../listadocentes")
+
+    return render(request, "matricula/desactivardocente.html", {'docentes': Profesor.objects.all(), 'form':docente})
 
 @login_required(login_url='/login')
 def listarDocentes(request):
@@ -143,17 +172,46 @@ def listarDocentes(request):
 def crearCurso(request):
     if request.method == "POST":
         obj = Curso()
-        obj.nombreCurso = request.POST["nombre"]
+        obj.nombreCurso = request.POST["nombreCurso"]
         obj.profesor = Profesor.objects.get(id = int(request.POST["profesor"]))
+        obj.vacantes = request.POST["vacantes"]
         obj.activo = True        
 
+        return HttpResponseRedirect("listacursos")
         obj.save()
 
     return render(request, "matricula/crearcurso.html", {
         'profesores': Profesor.objects.all(), 
         'cursos': Curso.objects.all()
         })
-    
+
+@login_required(login_url='/login')
+def editarCurso(request, id):
+    curso = Curso.objects.get(id=id)   
+    if request.method == "POST":
+        curso.id = id
+        curso.nombreCurso = request.POST["nombreCurso"]
+        curso.profesor = Profesor.objects.get(id = int(request.POST["profesor"]))
+        curso.vacantes = request.POST["vacantes"]   
+
+        curso.save()
+        return HttpResponseRedirect("../listacursos")
+
+    return render(request, "matricula/editarcurso.html", {'profesores': Profesor.objects.all(), 'cursos': Curso.objects.all(), 'form':curso})
+
+@login_required(login_url='/login')
+def desactivarCurso(request, id):
+    curso = Curso.objects.get(id=id)   
+    if request.method == "POST":        
+        if(curso.activo):
+            curso.activo =  False    
+        else:
+            curso.activo = True
+
+        curso.save()
+        return HttpResponseRedirect("../listacursos")
+
+    return render(request, "matricula/desactivarcurso.html", {'cursos': Curso.objects.all(), 'form':curso})
 
 @login_required(login_url='/login')
 def listarCursos(request):
@@ -185,4 +243,13 @@ def matricularAlumno(request):
             'cursos': Curso.objects.all(),
             'alumnos': Alumno.objects.all()
         })
+
+@login_required(login_url='/login')
+def listarMatriculas(request, semestre):
+    matricula = DetalleMatricula.objects.all().filter(semestre=semestre)
+    listacurso = []
+    for obj in matricula:
+        listacurso.append(obj.curso)
+    listacurso = list(dict.fromkeys(listacurso))    
+    return render(request, "matricula/listamatriculas.html", {'cursos': listacurso})
     

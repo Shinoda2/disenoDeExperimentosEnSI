@@ -1,0 +1,48 @@
+{% extends "matricula/layout.html" %}
+
+{% block body %}
+<!-- buscar y registrar nuevo -->
+<h1 style="display: inline; margin-left: 10%;"> Matriculas Registradas</h1>
+<!-- <button id="options" class="btn btn-success" onclick="changeWindow()">NUEVA MATRICULA/button> -->
+</div>
+<!-- tabla de datos -->
+<div>
+    <table id="tabla" class="table">
+    <thead>
+            <tr>
+                <th scope="col">
+                    Id
+                </th>
+                <th scope="col">
+                    Nombre del curso
+                </th>
+                <th scope="col">
+                    Vacantes
+                </th>                
+            </tr>
+        </thead>
+        <tbody>
+            {% for curso in cursos %}
+            <tr>
+                <td scope="row">
+                    {{curso.id}}
+                </td>
+                <td scope="row">
+                    {{curso.nombreCurso}}
+                </td>
+                <td scope="row">
+                    {{curso.vacantes}} 
+                </td>               
+                </td>                
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+<div id="warningList"></div>
+<script>
+    const changeWindow = () => {
+        // window.location.pathname = '../crearcurso';
+    }    
+</script>
+{% endblock %}

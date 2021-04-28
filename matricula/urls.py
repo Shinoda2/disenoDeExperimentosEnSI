@@ -17,9 +17,17 @@ urlpatterns = [
 
     path('crearprofesor', views.crearProfesor, name='crearprofesor'),
     path('listadocentes', views.listarDocentes, name='listadocentes'),
+    path('editardocente/<int:id>', views.editarDocente, name='editardocente'),
+    path('desactivardocente/<int:id>', views.desactivarDocente, name='desactivardocente'),
 
     path('crearcurso', views.crearCurso, name='crearcurso'),
     path('listacursos', views.listarCursos, name='listacursos'),
+    path('editarcurso/<int:id>', views.editarCurso, name='editarcurso'),
+    path('desactivarcurso/<int:id>', views.desactivarCurso, name='desactivarcurso'),
 
-    path('matricularalumno', views.matricularAlumno, name='matricularalumno')
+    path('matricularalumno', views.matricularAlumno, name='matricularalumno'),
+    path('listamatriculas', views.listarMatriculas, name='listamatriculas'),
+    path('listamatriculas/<str:semestre>', views.listarMatriculas, name='listamatriculas')
+
+
 ]

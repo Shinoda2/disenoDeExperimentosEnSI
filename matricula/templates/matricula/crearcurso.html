@@ -6,22 +6,44 @@
     <svg id="exitForm" xmlns="http://www.w3.org/2000/svg" width="15.849" height="15.848" viewBox="0 0 30.849 30.848" onclick="changeWindow()">
     <path id="Icon_metro-cross" data-name="Icon metro-cross" d="M33.138,26.711h0l-9.358-9.358,9.358-9.358h0a.966.966,0,0,0,0-1.363L28.717,2.21a.967.967,0,0,0-1.363,0h0L18,11.568,8.637,2.21h0a.966.966,0,0,0-1.363,0L2.852,6.631a.966.966,0,0,0,0,1.363h0l9.358,9.358L2.852,26.711h0a.966.966,0,0,0,0,1.363l4.421,4.421a.966.966,0,0,0,1.363,0h0L18,23.136l9.358,9.358h0a.966.966,0,0,0,1.363,0l4.421-4.421a.966.966,0,0,0,0-1.363Z" transform="translate(-2.571 -1.928)" fill="#b7b7b7"/>
     </svg> 
-    <h2>Registrar Curso</h2>
+    <h2 id="formTitle">Registrar Curso</h2>
 
     <form action="{% url 'crearcurso' %}" method="post">
         {% csrf_token %}
-        <div class="form-group">
-            <input autofocus class="form-control" type="text" name="nombre" placeholder="Nombre del Curso" maxlength="50" required> 
+        <div id="registerForm">
+            <div class="form-group row">
+                <p class="col-sm-6">Nombre del curso</p>
+                <input autofocus class="form-control col-sm-6" type="text" name="nombreCurso" placeholder="Nombre del Curso" maxlength="50" required> 
+                <p id="errorMessage1" class="row errorMessageStyle" style="display: none;">*El dato ingresado no era válido</p>
+            </div>
+            <div class="form-group row">
+                <p class="col-sm-6">Docente</p>
+                <select class="form-control col-sm-6" name="profesor" placeholder="Docente" required>
+                    <option disabled selected value> -- Selecciona un docente -- </option>
+                    {% for profesor in profesores %}
+                    {% if profesor.activo %}
+                        <option value="{{ profesor.id }}">{{ profesor.nombre }} {{ profesor.apellido }}</option>
+                    {% endif %}
+                    {% endfor %}
+                </select>
+                <p id="errorMessage2" class="row errorMessageStyle" style="display: none;">*El dato ingresado no era válido</p>
+            </div>
+            <div class="form-group row">
+                <p class="col-sm-6">Vacantes</p>                
+                <input autofocus class="form-control col-sm-6" type="number" name="vacantes" placeholder="Vacantes" max="10" min="0" required> 
+                <p id="errorMessage3" class="row errorMessageStyle" style="display: none;">*El dato ingresado no era válido</p>
+            </div>
         </div>
-        <div class="form-group">
-            <select class="form-control" name="profesor" placeholder="Profesor" required>
-                <option disabled selected value> -- Selecciona un profesor -- </option>
-                {% for profesor in profesores %}
-                    <option value="{{ profesor.id }}">{{ profesor.nombre }} {{ profesor.apellido }}</option>
-                {% endfor %}
-            </select>
+        <div id="confirmationMessage" style="display: none;" class="row">
+            <p>Confirmación de registro</p>       
+            <p>¿Está seguro de realizar este registro?</p>       
         </div>
-        <input class="btn btn-primary" type="submit" value="Crear">
+        <div style="margin-left: 31%; width: 50%;">
+            <input id="btnHideConfirmation" class="btn btn-danger col-sm-4" value="CANCELAR" onclick="hideConfirmation()" style="display: none;" >
+            <input id="btnRegister" class="btn btn-success col-sm-4" type="submit" value="REGISTRAR" style="display: none;" onclick="changeWindow()">
+            <!-- <input id="btnAccept" class="btn btn-success col-sm-8" value="ACEPTAR" style="display: none;" onclick="changeWindow()"> -->
+        </div>
+        <input id="btnShowConfirmation" class="btn btn-success" value="REGISTRAR" onclick="showConfirmation()" style="margin-left: 35%; margin-top: 14px;">
     </form>
 
 </div>
@@ -39,7 +61,7 @@
                     Nombre del curso
                 </th>
                 <th scope="col">
-                    Profesor
+                    Docente
                 </th>
                 <th scope="col">
                     Vacantes
@@ -90,6 +112,32 @@
 <script>
     const changeWindow = () => {
         window.location.pathname = '../listacursos';
+    }
+    const showConfirmation = () => {
+        document.getElementById("errorMessage1").style.display = "none";
+        document.getElementById("errorMessage2").style.display = "none";
+        document.getElementById("errorMessage3").style.display = "none";        
+        
+        var hasNumber = /\d/;
+        var format = /[`!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?~]/;        
+
+        
+        document.getElementById("confirmationMessage").style.display = "";
+        document.getElementById("registerForm").style.display = "none";
+        document.getElementById("formTitle").style.display = "none";
+
+        document.getElementById("btnShowConfirmation").style.display = "none";
+        document.getElementById("btnHideConfirmation").style.display = "";
+        document.getElementById("btnRegister").style.display = ""; 
+    }
+
+    const hideConfirmation = () => {
+        document.getElementById("confirmationMessage").style.display = "none";
+        document.getElementById("registerForm").style.display = "";
+
+        document.getElementById("btnShowConfirmation").style.display = "";
+        document.getElementById("btnHideConfirmation").style.display = "none";
+        document.getElementById("btnRegister").style.display = "none";
     }
 </script>
 {% endblock %}

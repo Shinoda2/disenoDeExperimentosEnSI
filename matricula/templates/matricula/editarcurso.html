@@ -5,36 +5,40 @@
 <div id="Form">
     <svg id="exitForm" xmlns="http://www.w3.org/2000/svg" width="15.849" height="15.848" viewBox="0 0 30.849 30.848" onclick="changeWindow()">
     <path id="Icon_metro-cross" data-name="Icon metro-cross" d="M33.138,26.711h0l-9.358-9.358,9.358-9.358h0a.966.966,0,0,0,0-1.363L28.717,2.21a.967.967,0,0,0-1.363,0h0L18,11.568,8.637,2.21h0a.966.966,0,0,0-1.363,0L2.852,6.631a.966.966,0,0,0,0,1.363h0l9.358,9.358L2.852,26.711h0a.966.966,0,0,0,0,1.363l4.421,4.421a.966.966,0,0,0,1.363,0h0L18,23.136l9.358,9.358h0a.966.966,0,0,0,1.363,0l4.421-4.421a.966.966,0,0,0,0-1.363Z" transform="translate(-2.571 -1.928)" fill="#b7b7b7"/>
-    </svg>      
-    <h2 id="formTitle">Registrar docente</h2>
+    </svg> 
+    <h2 id="formTitle">Actualizar Curso</h2>
 
-    <form action="{% url 'crearprofesor' %}" method="post">        
+    <form method="post">
         {% csrf_token %}
         <div id="registerForm">
             <div class="form-group row">
-                <p class="col-sm-6">Nombres</p>
-                <input id="txtNombre" autofocus class="form-control col-sm-6" type="text" name="nombre" placeholder="Nombres del docente" maxlength="25" required>
+                <p class="col-sm-6">Nombre del curso</p>
+                <input value="{{form.nombreCurso}}" autofocus class="form-control col-sm-6" type="text" name="nombreCurso" placeholder="Nombre del Curso" maxlength="50" required> 
                 <p id="errorMessage1" class="row errorMessageStyle" style="display: none;">*El dato ingresado no era válido</p>
             </div>
             <div class="form-group row">
-                <p class="col-sm-6">Apellidos</p>
-                <input id="txtApellido" autofocus class="form-control col-sm-6" type="text" name="apellido" placeholder="Apellidos del docente" maxlength="25" required>
+                <p class="col-sm-6">Docente</p>
+                <select class="form-control col-sm-6" name="profesor" placeholder="Docente" required>
+                    <option disabled selected value> -- Selecciona un docente -- </option>
+                    <option hidden selected="selected" value="{{form.profesor.id}}">{{form.profesor.nombre}} {{form.profesor.apellido}}</option>
+                    {% for profesor in profesores %}
+                    {% if profesor.activo %}
+                        <option value="{{ profesor.id }}">{{ profesor.nombre }} {{ profesor.apellido }}</option>
+                    {% endif %}
+                    {% endfor %}
+                </select>
                 <p id="errorMessage2" class="row errorMessageStyle" style="display: none;">*El dato ingresado no era válido</p>
             </div>
             <div class="form-group row">
-                <p class="col-sm-6">DNI</p>
-                <input id="txtDNI" autofocus class="form-control col-sm-6" type="number" name="dni" placeholder="DNI del docente" max="99999999" min="00000001" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"
-                maxlength="8" required>
+                <p class="col-sm-6">Vacantes</p>                
+                <input value="{{form.vacantes}}" autofocus class="form-control col-sm-6" type="number" name="vacantes" placeholder="Vacantes" max="10" min="0" required> 
                 <p id="errorMessage3" class="row errorMessageStyle" style="display: none;">*El dato ingresado no era válido</p>
-            </div> 
+            </div>
         </div>
         <div id="confirmationMessage" style="display: none;" class="row">
-            <p>Confirmación de registro</p>       
-            <p>¿Está seguro de realizar este registro?</p>       
+            <p>Confirmación de actualización</p>       
+            <p>¿Está seguro de realizar este cambio?</p>       
         </div>
-        <!-- <div id="acceptMessage" style="display: none;" class="row">
-            <p>Registro exitoso</p>       
-        </div> -->
         <div style="margin-left: 31%; width: 50%;">
             <input id="btnHideConfirmation" class="btn btn-danger col-sm-4" value="CANCELAR" onclick="hideConfirmation()" style="display: none;" >
             <input id="btnRegister" class="btn btn-success col-sm-4" type="submit" value="REGISTRAR" style="display: none;" onclick="changeWindow()">
@@ -42,11 +46,12 @@
         </div>
         <input id="btnShowConfirmation" class="btn btn-success" value="REGISTRAR" onclick="showConfirmation()" style="margin-left: 35%; margin-top: 14px;">
     </form>
+
 </div>
 <div id="blackScreen"></div>
 <!-- buscar y registrar nuevo -->
 <input id="buscar" type="number" placeholder="Búsqueda" class="form-control">
-<button id="options" class="btn btn-success" onclick="changeWindow()">NUEVO DOCENTE</button>
+<button id="options" class="btn btn-success" onclick="changeWindow()">NUEVO CURSO</button>
 </div>
 <!-- tabla de datos -->
 <div>
@@ -54,13 +59,13 @@
     <thead>
             <tr>
                 <th scope="col">
-                    Nombres
+                    Nombre del curso
                 </th>
                 <th scope="col">
-                    Apellidos
+                    Docente
                 </th>
                 <th scope="col">
-                    DNI
+                    Vacantes
                 </th>
                 <th scope="col">
                     Visibilidad
@@ -71,19 +76,19 @@
             </tr>
         </thead>
         <tbody>
-            {% for docente in docentes %}
+            {% for curso in cursos %}
             <tr>
                 <td scope="row">
-                {{docente.nombre}} 
+                    {{curso.nombreCurso}} 
                 </td>
                 <td scope="row">
-                    {{docente.apellido}} 
+                    {{curso.profesor.nombre}} {{curso.profesor.apellido}}  
                 </td>
                 <td scope="row">
-                    {{docente.dni}} 
+                    {{curso.vacantes}} 
                 </td>
                 <td scope="row">
-                    {% if docente.activo is True %} 
+                    {% if curso.activo is True %} 
                     <svg xmlns="http://www.w3.org/2000/svg" width="25" height="15.846" viewBox="0 0 36 26.846">
                         <path id="Icon_awesome-check" data-name="Icon awesome-check" d="M12.227,30.9.527,19.2a1.8,1.8,0,0,1,0-2.546L3.073,14.1a1.8,1.8,0,0,1,2.546,0L13.5,21.986,30.382,5.1a1.8,1.8,0,0,1,2.546,0L35.473,7.65a1.8,1.8,0,0,1,0,2.546l-20.7,20.7A1.8,1.8,0,0,1,12.227,30.9Z" transform="translate(0 -4.577)"/>
                       </svg>                      
@@ -104,66 +109,27 @@
     </table>
 </div>
 <div id="warningList"></div>
+
 <script>
     const changeWindow = () => {
-        window.location.pathname = '../listadocentes';
+        window.location.pathname = '../listacursos';
     }
-    // const changeToAccept = () => {
-    //     document.getElementById("btnAccept").style.display = "";
-    //     document.getElementById("btnHideConfirmation").style.display = "none";
-    //     document.getElementById("btnRegister").style.display = "none";
-
-    //     document.getElementById("confirmationMessage").style.display = "none";
-    //     document.getElementById("acceptMessage").style.display = "";
-        
-    // }
-    // función donde se validan los datos de los campos ingresados
     const showConfirmation = () => {
         document.getElementById("errorMessage1").style.display = "none";
         document.getElementById("errorMessage2").style.display = "none";
-        document.getElementById("errorMessage3").style.display = "none";
-
-        var nombreState;
-        var apellidoState;
-        var dniState;
-        
-        var txtNombre = document.getElementById("txtNombre").value;
-        var txtApellido = document.getElementById("txtApellido").value;
-        var txtDNI = document.getElementById("txtDNI").value;
+        document.getElementById("errorMessage3").style.display = "none";        
         
         var hasNumber = /\d/;
         var format = /[`!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?~]/;        
 
-        if (txtNombre == "" || hasNumber.test(txtNombre) || format.test(txtNombre)) {
-            document.getElementById("errorMessage1").style.display = "";
-            document.getElementById("txtNombre").value = "";
-        } else {
-            nombreState = 1;
-        }
-
-        if (txtApellido == "" || hasNumber.test(txtApellido) || format.test(txtApellido)) {
-            document.getElementById("errorMessage2").style.display = "";
-            document.getElementById("txtApellido").value = "";
-        } else {
-            apellidoState = 1;
-        }
         
-        if (txtDNI == "" || hasNumber.test(txtDNI) == false) {
-            document.getElementById("errorMessage3").style.display = "";
-            document.getElementById("txtDNI").value = "";
-        } else {
-            dniState = 1;
-        }
+        document.getElementById("confirmationMessage").style.display = "";
+        document.getElementById("registerForm").style.display = "none";
+        document.getElementById("formTitle").style.display = "none";
 
-        if(nombreState && apellidoState && dniState){
-            document.getElementById("confirmationMessage").style.display = "";
-            document.getElementById("registerForm").style.display = "none";
-            document.getElementById("formTitle").style.display = "none";
-
-            document.getElementById("btnShowConfirmation").style.display = "none";
-            document.getElementById("btnHideConfirmation").style.display = "";
-            document.getElementById("btnRegister").style.display = ""; 
-        } 
+        document.getElementById("btnShowConfirmation").style.display = "none";
+        document.getElementById("btnHideConfirmation").style.display = "";
+        document.getElementById("btnRegister").style.display = ""; 
     }
 
     const hideConfirmation = () => {
