@@ -3,7 +3,13 @@
 {% block body %}
 <!-- buscar y registrar nuevo -->
 <h1 style="display: inline; margin-left: 10%;"> Matriculas Registradas</h1>
-<!-- <button id="options" class="btn btn-success" onclick="changeWindow()">NUEVA MATRICULA/button> -->
+<select id="selectDinamico" class="form-control col-sm-1" style="display: inline; margin-left: 25%;" onchange="changeFilter()">
+    <option value="" hidden>Semestre</option> 
+    <option value="2020-0">2020-0</option> 
+   <option value="2020-1">2020-1</option> 
+   <option value="2020-2">2020-2</option> 
+</select>
+<button id="options" class="btn btn-success" onclick="changeWindow()">NUEVA MATRICULA</button>
 </div>
 <!-- tabla de datos -->
 <div>
@@ -13,8 +19,8 @@
                 <th scope="col">
                     Id
                 </th>
-                <th scope="col">
-                    Nombre del curso
+                <th scope="col">                
+                    Nombre del curso                    
                 </th>
                 <th scope="col">
                     Vacantes
@@ -28,21 +34,31 @@
                     {{curso.id}}
                 </td>
                 <td scope="row">
+                    {% if semestre %}
+                    <a href="../reportematricula/{{semestre}}/{{curso.id}}" style="color: black;">
                     {{curso.nombreCurso}}
+                    </a>                    
+                    {% else %}
+                    {{curso.nombreCurso}}
+                    {% endif %}
                 </td>
                 <td scope="row">
                     {{curso.vacantes}} 
-                </td>               
-                </td>                
-            </tr>
-            {% endfor %}
+                </td>                                        
+            </tr>            
+            {% endfor %}            
         </tbody>
     </table>
 </div>
 <div id="warningList"></div>
 <script>
     const changeWindow = () => {
-        // window.location.pathname = '../crearcurso';
+        window.location.pathname = '../matricularalumno';
+    }     
+    const changeFilter = () => {
+        var selec =  document.getElementById("selectDinamico");
+        var strSelec = selec.options[selec.selectedIndex].text;
+        window.location.pathname = '/listamatriculas/'+ strSelec;        
     }    
 </script>
 {% endblock %}

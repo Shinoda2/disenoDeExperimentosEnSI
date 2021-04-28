@@ -1,31 +1,151 @@
 {% extends "matricula/layout.html" %}
 
 {% block body %}
-    {% if mensaje %}
-        <div class="alert alert-{{msg_type}}">{{ mensaje }}</div>
-    {% endif %}
 
-    <h2>Registrar Curso</h2>
+<div id="Form">
+    <svg id="exitForm" xmlns="http://www.w3.org/2000/svg" width="15.849" height="15.848" viewBox="0 0 30.849 30.848" onclick="changeWindow()">
+    <path id="Icon_metro-cross" data-name="Icon metro-cross" d="M33.138,26.711h0l-9.358-9.358,9.358-9.358h0a.966.966,0,0,0,0-1.363L28.717,2.21a.967.967,0,0,0-1.363,0h0L18,11.568,8.637,2.21h0a.966.966,0,0,0-1.363,0L2.852,6.631a.966.966,0,0,0,0,1.363h0l9.358,9.358L2.852,26.711h0a.966.966,0,0,0,0,1.363l4.421,4.421a.966.966,0,0,0,1.363,0h0L18,23.136l9.358,9.358h0a.966.966,0,0,0,1.363,0l4.421-4.421a.966.966,0,0,0,0-1.363Z" transform="translate(-2.571 -1.928)" fill="#b7b7b7"/>
+    </svg> 
+    <h2 id="formTitle">Registrar Matrícula</h2>
 
     <form action="{% url 'matricularalumno' %}" method="post">
         {% csrf_token %}
-        <div class="form-group">
-            <select class="form-control" name="curso" placeholder="Curso" required>
-                <option disabled selected value> -- Selecciona un curso -- </option>
-                {% for curso in cursos %}
-                    <option value="{{ curso.id }}">{{ curso.nombreCurso }}</option>
-                {% endfor %}
-            </select>
+        <div id="registerForm">
+            <div class="form-group row">
+                <p class="col-sm-6">Cursos</p>
+                <select class="form-control col-sm-6" name="curso" placeholder="Curso" required>
+                    <option disabled selected value> -- Selecciona un curso -- </option>
+                    {% for curso in cursos %}
+                        <option value="{{ curso.id }}">{{ curso.nombreCurso }}</option>
+                    {% endfor %}
+                </select>
+                <p id="errorMessage1" class="row errorMessageStyle" style="display: none;">*El dato ingresado no era válido</p>
+            </div>
+            <div class="form-group row">
+                <p class="col-sm-6">Alumnos</p>
+                <select class="form-control col-sm-6" name="alumno" placeholder="Alumno" required>
+                    <option disabled selected value> -- Selecciona un alumno -- </option>
+                    {% for alumno in alumnos %}
+                        <option value="{{ alumno.id }}">{{ alumno.nombre }} {{ alumno.apellido }}</option>
+                    {% endfor %}
+                </select>
+                <p id="errorMessage2" class="row errorMessageStyle" style="display: none;">*El dato ingresado no era válido</p>
+            </div>
+            <div class="form-group row">
+                <p class="col-sm-6">Semestre</p>                
+                <select class="form-control col-sm-3" style="display: inline; margin-left: 25%;" name="semestre" placeholder="Semestre" required>
+                    <option value="" disabled selected value>Selecciona un semestre</option> 
+                    <option value="2020-0">2020-0</option> 
+                   <option value="2020-1">2020-1</option> 
+                   <option value="2020-2">2020-2</option> 
+                </select>
+                <p id="errorMessage3" class="row errorMessageStyle" style="display: none;">*El dato ingresado no era válido</p>
+            </div>
         </div>
-        <div class="form-group">
-            <select class="form-control" name="alumno" placeholder="Alumno" required>
-                <option disabled selected value> -- Selecciona un alumno -- </option>
-                {% for alumno in alumnos %}
-                    <option value="{{ alumno.id }}">{{ alumno.nombre }} {{ alumno.apellido }}</option>
-                {% endfor %}
-            </select>
+        <div id="confirmationMessage" style="display: none;" class="row">
+            <p>Confirmación de registro</p>       
+            <p>¿Está seguro de realizar este registro?</p>       
         </div>
-        <input class="btn btn-primary" type="submit" value="Matricular">
+        <div style="margin-left: 31%; width: 50%;">
+            <input id="btnHideConfirmation" class="btn btn-danger col-sm-4" value="CANCELAR" onclick="hideConfirmation()" style="display: none;" >
+            <input id="btnRegister" class="btn btn-success col-sm-4" type="submit" value="REGISTRAR" style="display: none;" onclick="changeWindow()">
+            <!-- <input id="btnAccept" class="btn btn-success col-sm-8" value="ACEPTAR" style="display: none;" onclick="changeWindow()"> -->
+        </div>
+        <input id="btnShowConfirmation" class="btn btn-success" value="REGISTRAR" onclick="showConfirmation()" style="margin-left: 35%; margin-top: 14px;">
     </form>
 
+</div>
+<div id="blackScreen"></div>
+<!-- buscar y registrar nuevo -->
+<input id="buscar" type="number" placeholder="Búsqueda" class="form-control">
+<button id="options" class="btn btn-success" onclick="changeWindow()">NUEVA MATRICULA</button>
+</div>
+<!-- tabla de datos -->
+<div>
+    <table id="tabla" class="table">
+    <thead>
+            <tr>
+                <th scope="col">
+                    Nombre del curso
+                </th>
+                <th scope="col">
+                    Docente
+                </th>
+                <th scope="col">
+                    Vacantes
+                </th>
+                <th scope="col">
+                    Visibilidad
+                </th>
+                <th scope="col">
+                    Actualizar
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for curso in cursos %}
+            <tr>
+                <td scope="row">
+                    {{curso.nombreCurso}} 
+                </td>
+                <td scope="row">
+                    {{curso.profesor.nombre}} {{curso.profesor.apellido}}  
+                </td>
+                <td scope="row">
+                    {{curso.vacantes}} 
+                </td>
+                <td scope="row">
+                    {% if curso.activo is True %} 
+                    <svg xmlns="http://www.w3.org/2000/svg" width="25" height="15.846" viewBox="0 0 36 26.846">
+                        <path id="Icon_awesome-check" data-name="Icon awesome-check" d="M12.227,30.9.527,19.2a1.8,1.8,0,0,1,0-2.546L3.073,14.1a1.8,1.8,0,0,1,2.546,0L13.5,21.986,30.382,5.1a1.8,1.8,0,0,1,2.546,0L35.473,7.65a1.8,1.8,0,0,1,0,2.546l-20.7,20.7A1.8,1.8,0,0,1,12.227,30.9Z" transform="translate(0 -4.577)"/>
+                      </svg>                      
+                    {% else %}
+                    <svg xmlns="http://www.w3.org/2000/svg" width="19.849" height="19.849" viewBox="0 0 30.849 30.849">
+                        <path id="Icon_metro-cross" data-name="Icon metro-cross" d="M33.138,26.711h0l-9.358-9.358,9.358-9.358h0a.966.966,0,0,0,0-1.363L28.717,2.21a.967.967,0,0,0-1.363,0h0L18,11.568,8.637,2.21h0a.966.966,0,0,0-1.363,0L2.852,6.631a.966.966,0,0,0,0,1.363h0l9.358,9.358L2.852,26.711h0a.966.966,0,0,0,0,1.363l4.421,4.421a.966.966,0,0,0,1.363,0h0L18,23.136l9.358,9.358h0a.966.966,0,0,0,1.363,0l4.421-4.421a.966.966,0,0,0,0-1.363Z" transform="translate(-2.571 -1.928)"/>
+                      </svg>                      
+                    {% endif %}
+                </td>
+                <td scope="row">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20.849" height="20.849" viewBox="0 0 30.849 30.849">
+                        <path id="Icon_metro-pencil" data-name="Icon metro-pencil" d="M28.6,1.928A4.82,4.82,0,0,1,32.455,9.64l-1.928,1.928L23.779,4.82l1.928-1.928A4.8,4.8,0,0,1,28.6,1.928ZM4.5,24.1,2.571,32.777l8.676-1.928L29.081,13.014,22.333,6.266ZM24.128,12.881l-13.5,13.5L8.97,24.716l13.5-13.5,1.662,1.662Z" transform="translate(-2.571 -1.928)"/>
+                    </svg>                  
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+<div id="warningList"></div>
+
+<script>
+    const changeWindow = () => {
+        window.location.pathname = '../listacursos';
+    }
+    const showConfirmation = () => {
+        document.getElementById("errorMessage1").style.display = "none";
+        document.getElementById("errorMessage2").style.display = "none";
+        document.getElementById("errorMessage3").style.display = "none";        
+        
+        var hasNumber = /\d/;
+        var format = /[`!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?~]/;        
+
+        
+        document.getElementById("confirmationMessage").style.display = "";
+        document.getElementById("registerForm").style.display = "none";
+        document.getElementById("formTitle").style.display = "none";
+
+        document.getElementById("btnShowConfirmation").style.display = "none";
+        document.getElementById("btnHideConfirmation").style.display = "";
+        document.getElementById("btnRegister").style.display = ""; 
+    }
+
+    const hideConfirmation = () => {
+        document.getElementById("confirmationMessage").style.display = "none";
+        document.getElementById("registerForm").style.display = "";
+
+        document.getElementById("btnShowConfirmation").style.display = "";
+        document.getElementById("btnHideConfirmation").style.display = "none";
+        document.getElementById("btnRegister").style.display = "none";
+    }
+</script>
 {% endblock %}

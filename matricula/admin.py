@@ -9,8 +9,10 @@ class docenteadmin(admin.ModelAdmin):
     list_display = ("id", "nombre", "apellido", "dni")
 class cursoadmin(admin.ModelAdmin):
     list_display = ("id", "nombreCurso", "profesor" , "vacantes") 
+class matriculaadmin(admin.ModelAdmin):
+    list_display = ("id", "alumno", "curso" , "semestre") 
 admin.site.register(User)
 admin.site.register(Alumno, alumnoadmin)
 admin.site.register(Profesor, docenteadmin)
 admin.site.register(Curso, cursoadmin)
-admin.site.register(DetalleMatricula)
+admin.site.register(DetalleMatricula, matriculaadmin)

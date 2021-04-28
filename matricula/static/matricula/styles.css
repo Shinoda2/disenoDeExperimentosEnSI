@@ -89,7 +89,7 @@ body {
 #bootstrap-overrides .nav-links{
     position: absolute;
     left: 0px;
-    height: 92vh;
+    height: 100vh;
     top: 0;
     background-color: white;
     display: flex;

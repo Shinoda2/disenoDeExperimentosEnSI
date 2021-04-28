@@ -1,0 +1,112 @@
+{% extends "matricula/layout.html" %}
+
+{% block body %}
+
+<div id="Form">
+    <svg id="exitForm" xmlns="http://www.w3.org/2000/svg" width="15.849" height="15.848" viewBox="0 0 30.849 30.848" onclick="changeWindow()">
+    <path id="Icon_metro-cross" data-name="Icon metro-cross" d="M33.138,26.711h0l-9.358-9.358,9.358-9.358h0a.966.966,0,0,0,0-1.363L28.717,2.21a.967.967,0,0,0-1.363,0h0L18,11.568,8.637,2.21h0a.966.966,0,0,0-1.363,0L2.852,6.631a.966.966,0,0,0,0,1.363h0l9.358,9.358L2.852,26.711h0a.966.966,0,0,0,0,1.363l4.421,4.421a.966.966,0,0,0,1.363,0h0L18,23.136l9.358,9.358h0a.966.966,0,0,0,1.363,0l4.421-4.421a.966.966,0,0,0,0-1.363Z" transform="translate(-2.571 -1.928)" fill="#b7b7b7"/>
+    </svg>      
+    <h2 id="formTitle" style="margin-left: 40%;">Matrícula</h2>
+
+    <form>        
+        {% csrf_token %}
+        <div id="registerForm">
+            <div class="form-group row">
+                <p class="col-sm-6">Curso</p>
+                <input id="txtCurso" value="{{matricula.curso.nombreCurso}}" autofocus class="form-control col-sm-6" type="text" name="nombreCurso" readonly>
+            </div>
+            <div class="form-group row">
+                <p class="col-sm-6">Semestre</p>
+                <input id="txtSemestre" value="{{matricula.semestre}}" autofocus class="form-control col-sm-6" type="text" name="semestre" readonly>
+            </div>
+            <div class="form-group row">
+                <p class="col-sm-6">Alumnos</p>
+                <div id="contentAlumnos">
+                    <table id="tabla">
+                        <tbody>                            
+                            {% for alumno in alumnos %}
+                            <tr>
+                                <td scope="row">
+                                    {{alumno.nombre}} {{alumno.apellido}}
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div> 
+        </div>              
+        <input id="btnShowConfirmation" class="btn btn-success" value="ACEPTAR" onclick="changeWindow()" style="margin-left: 35%; margin-top: 14px;">
+    </form>
+</div>
+<div id="blackScreen"></div>
+<!-- buscar y registrar nuevo -->
+<h1 style="display: inline; margin-left: 10%;"> Matriculas Registradas</h1>
+<select id="selectDinamico" class="form-control col-sm-1" style="display: inline; margin-left: 25%;" onchange="changeFilter()">
+    <option value="" hidden>Semestre</option> 
+    <option value="2020-0">2020-0</option> 
+   <option value="2020-1">2020-1</option> 
+   <option value="2020-2">2020-2</option> 
+</select>
+<button id="options" class="btn btn-success" onclick="changeWindow()">NUEVA MATRICULA</button>
+</div>
+<!-- tabla de datos -->
+<div>
+    <table id="tabla" class="table">
+    <thead>
+            <tr>
+                <th scope="col">
+                    Id
+                </th>
+                <th scope="col">
+                    Nombre del curso
+                </th>
+                <th scope="col">
+                    Vacantes
+                </th>                
+            </tr>
+        </thead>
+        <tbody>
+            {% for curso in cursos %}
+            <tr>
+                <td scope="row">
+                    {{curso.id}}
+                </td>
+                <td scope="row">
+                    {{curso.nombreCurso}}
+                </td>
+                <td scope="row">
+                    {{curso.vacantes}} 
+                </td>                                        
+            </tr>            
+            {% endfor %}            
+        </tbody>
+    </table>
+</div>
+<div id="warningList"></div>
+<script>
+    const changeWindow = () => {
+        window.history.back();
+    }     
+    const changeFilter = () => {
+        var selec =  document.getElementById("selectDinamico");
+        var strSelec = selec.options[selec.selectedIndex].text;
+        window.location.pathname = '/listamatriculas/'+ strSelec;        
+    }    
+</script>
+<style>
+    #contentAlumnos {
+        height: 100px; 
+        width: 50%;
+        padding: 5px;
+        overflow-y: auto; 
+        overflow-x: hidden; 
+        background-color: white;
+        border-radius: 3px;
+
+        -webkit-box-shadow: 0 8px 6px -6px #999;
+        -moz-box-shadow: 0 8px 6px -6px #999;
+        box-shadow: 0 10px 16px -10px #999;     
+    }
+</style>
+{% endblock %}

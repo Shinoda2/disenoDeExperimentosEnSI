@@ -221,19 +221,33 @@ def listarCursos(request):
 def matricularAlumno(request):
     if request.method == "POST":
         objCurso = Curso.objects.get(pk = int(request.POST["curso"]))
+        semestre = request.POST["semestre"]
+        matricula = DetalleMatricula.objects.all().filter(semestre = semestre, curso = objCurso)
+
+        obj = str(dict.fromkeys(matricula))    
+
+        listaalumnos = []
+        for obj in matricula:
+                listaalumnos.append(obj.alumno)
+        
+        print(len(listaalumnos))
+
         obj = DetalleMatricula()
-        if objCurso.matriculados < 10 :
-            obj.curso = Curso.objects.get(id = int(request.POST["curso"]))
-            obj.alumno = Alumno.objects.get(id = int(request.POST["alumno"]))
+        obj.curso = Curso.objects.get(id = int(request.POST["curso"]))
+        obj.alumno = Alumno.objects.get(id = int(request.POST["alumno"]))
+        obj.semestre = request.POST["semestre"]
+
+
+        if len(listaalumnos) < objCurso.vacantes :            
             obj.save()
-            objCurso.matriculados += 1
-            objCurso.save()
+            return HttpResponseRedirect("listamatriculas")
             return render(request, "matricula/matricularalumno.html", {
             'cursos': Curso.objects.all(),
             'alumnos': Alumno.objects.all()
         })
-        elif objCurso.matriculados == 10:
+        elif len(listaalumnos) == objCurso.vacantes:
             mensaje = "Ya no hay vacantes en este curso."
+            return HttpResponseRedirect("listamatriculas")
             return render(request, "matricula/matricularalumno.html", {
             'cursos': Curso.objects.all(),
             'alumnos': Alumno.objects.all(),
@@ -242,14 +256,42 @@ def matricularAlumno(request):
     return render(request, "matricula/matricularalumno.html", {
             'cursos': Curso.objects.all(),
             'alumnos': Alumno.objects.all()
-        })
+        })        
 
 @login_required(login_url='/login')
 def listarMatriculas(request, semestre):
     matricula = DetalleMatricula.objects.all().filter(semestre=semestre)
+    semestre = semestre
     listacurso = []
     for obj in matricula:
         listacurso.append(obj.curso)
+
+    lista = {i:listacurso.count(i) for i in listacurso}
     listacurso = list(dict.fromkeys(listacurso))    
-    return render(request, "matricula/listamatriculas.html", {'cursos': listacurso})
+    return render(request, "matricula/listamatriculas.html", {'cursos': lista, 'semestre':semestre})
+
+
+@login_required(login_url='/login')
+def listarMatriculasTotales(request):
+    matricula = DetalleMatricula.objects.all()
+    listacurso = []
+    for obj in matricula:
+        listacurso.append(obj.curso)
+
+    lista = {i:listacurso.count(i) for i in listacurso}
+    listacurso = list(dict.fromkeys(listacurso))    
+    return render(request, "matricula/listamatriculas.html", {'cursos': lista})
+
+@login_required(login_url='/login')
+def reporteMatricula(request,semestre, id):
+    curso = Curso.objects.get(id=id)   
+    matricula = DetalleMatricula.objects.all().filter(semestre = semestre, curso = curso)
+    
+    obj = str(dict.fromkeys(matricula))    
+
+    listaalumnos = []
+    for obj in matricula:
+            listaalumnos.append(obj.alumno)
+
+    return render(request, "matricula/reportematricula.html", {'matricula': obj, 'alumnos': listaalumnos})
     

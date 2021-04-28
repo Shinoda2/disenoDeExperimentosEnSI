@@ -26,8 +26,8 @@ urlpatterns = [
     path('desactivarcurso/<int:id>', views.desactivarCurso, name='desactivarcurso'),
 
     path('matricularalumno', views.matricularAlumno, name='matricularalumno'),
-    path('listamatriculas', views.listarMatriculas, name='listamatriculas'),
-    path('listamatriculas/<str:semestre>', views.listarMatriculas, name='listamatriculas')
+    path('listamatriculas', views.listarMatriculasTotales, name='listamatriculas'),
+    path('listamatriculas/<str:semestre>', views.listarMatriculas, name='listamatriculas'),
 
-
+    path('reportematricula/<str:semestre>/<int:id>', views.reporteMatricula, name='reportematricula')
 ]
