@@ -1,6 +1,16 @@
 # Diseño de Experimentos en SI
 
-Proceso para ejecutar el programa:
+### Instalar Python:
+1. Ingresar a este link y descargar: https://www.python.org/downloads/
+2. Ejecutar el programa.
+3. Al instalar, habilitar la casilla "Agregar al PATH".
+
+### Instalar Django:
+1. Abrir una terminal (CMD o GitBash).
+2. Ingresar pip install django
+3. Si no funciona, intentar con: pip3 install django
+
+### Proceso para ejecutar el programa:
 
 1. Hacer Pull al GitHub para tener todo actualizado.
 2. Abrir el folder con Visual Studio Code o el editor de código de su preferencia.
