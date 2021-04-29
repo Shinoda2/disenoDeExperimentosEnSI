@@ -9,6 +9,7 @@ Proceso para ejecutar el programa:
 5. Una vez ubicados en la terminal, escribir: python manage.py makemigrations
 6. Luego escribir: python manage.py migrate
 7. Finalmente, para correr el programa escribir: python manage.py runserver
+8. Entrar a la ruta: http://127.0.0.1:8000/
 
 
 #### Una vez que se finalicen los pasos, si desea cerrar el programa, precionar ctrl + c en la terminal.
