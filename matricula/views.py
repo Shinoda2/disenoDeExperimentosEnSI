@@ -97,8 +97,13 @@ def editarAlumno(request, id):
             alumno.save()
             return HttpResponseRedirect("../listaalumnos")
         else:
-            Alumno.objects.update(nombre = request.POST["nombre"], apellido = request.POST["apellido"], dni = request.POST["dni"])
-            return HttpResponseRedirect("../listaalumnos")
+            try:
+                Alumno.objects.update(nombre = request.POST["nombre"], apellido = request.POST["apellido"], dni = request.POST["dni"])
+                return HttpResponseRedirect("../listaalumnos")
+            except:
+                mensaje = "error"
+                return render(request, "matricula/editaralumno.html", {'alumnos': Alumno.objects.all(), 'form':alumno, 'mensaje':mensaje})
+            
     return render(request, "matricula/editaralumno.html", {'alumnos': Alumno.objects.all(), 'form':alumno,})
     
 
@@ -124,12 +129,7 @@ def listarAlumnos(request):
 @login_required(login_url='/login')
 def crearProfesor(request):
     if request.method == "POST":
-        obj = Profesor()
-        obj.nombre = request.POST["nombre"]
-        obj.apellido = request.POST["apellido"]
-        obj.dni = request.POST["dni"]
-
-        obj.save()
+        Profesor.objects.create(nombre = request.POST["nombre"], apellido = request.POST["apellido"], dni = request.POST["dni"])
         return HttpResponseRedirect("listadocentes")
 
     return render(request, "matricula/crearprofesor.html", {'docentes': Profesor.objects.all()})
@@ -138,13 +138,21 @@ def crearProfesor(request):
 def editarDocente(request, id):
     docente = Profesor.objects.get(dni=id)   
     if request.method == "POST":
-        docente.id = id
-        docente.nombre = request.POST["nombre"]
-        docente.apellido = request.POST["apellido"]
-        docente.dni = request.POST["dni"]   
+        if request.POST["dni"] == str(docente.dni):
 
-        docente.save()
-        return HttpResponseRedirect("../listadocentes")
+            docente.id = id
+            docente.nombre = request.POST["nombre"]
+            docente.apellido = request.POST["apellido"]
+            docente.dni = request.POST["dni"]   
+
+            docente.save()
+        else:
+            try:
+                Profesor.objects.update(nombre = request.POST["nombre"], apellido = request.POST["apellido"], dni = request.POST["dni"])
+                return HttpResponseRedirect("../listadocentes")
+            except:
+                mensaje = "error"
+                return render(request, "matricula/editardocente.html", {'docentes': Profesor.objects.all(), 'form':docente, 'mensaje':mensaje})
 
     return render(request, "matricula/editardocente.html", {'docentes': Profesor.objects.all(), 'form':docente})
 
@@ -232,25 +240,25 @@ def matricularAlumno(request):
 
         obj = DetalleMatricula()
         obj.curso = Curso.objects.get(id = int(request.POST["curso"]))
-        obj.alumno = Alumno.objects.get(id = int(request.POST["alumno"]))
+        obj.alumno = Alumno.objects.get(dni = int(request.POST["alumno"]))
         obj.semestre = request.POST["semestre"]
 
 
         if len(listaalumnos) < objCurso.vacantes :            
             obj.save()
             return HttpResponseRedirect("listamatriculas")
-            return render(request, "matricula/matricularalumno.html", {
-            'cursos': Curso.objects.all(),
-            'alumnos': Alumno.objects.all()
-        })
+        #     return render(request, "matricula/matricularalumno.html", {
+        #     'cursos': Curso.objects.all(),
+        #     'alumnos': Alumno.objects.all()
+        # })
         elif len(listaalumnos) == objCurso.vacantes:
             mensaje = "Ya no hay vacantes en este curso."
             return HttpResponseRedirect("listamatriculas")
-            return render(request, "matricula/matricularalumno.html", {
-            'cursos': Curso.objects.all(),
-            'alumnos': Alumno.objects.all(),
-            'mensaje':mensaje
-        })
+        #     return render(request, "matricula/matricularalumno.html", {
+        #     'cursos': Curso.objects.all(),
+        #     'alumnos': Alumno.objects.all(),
+        #     'mensaje':mensaje
+        # })
     return render(request, "matricula/matricularalumno.html", {
             'cursos': Curso.objects.all(),
             'alumnos': Alumno.objects.all()
