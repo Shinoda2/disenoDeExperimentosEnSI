@@ -26,7 +26,7 @@
                 <select class="form-control col-sm-6" name="alumno" placeholder="Alumno" required>
                     <option disabled selected value> -- Selecciona un alumno -- </option>
                     {% for alumno in alumnos %}
-                        <option value="{{ alumno.id }}">{{ alumno.nombre }} {{ alumno.apellido }}</option>
+                        <option value="{{ alumno.dni }}">{{ alumno.nombre }} {{ alumno.apellido }}</option>
                     {% endfor %}
                 </select>
                 <p id="errorMessage2" class="row errorMessageStyle" style="display: none;">*El dato ingresado no era válido</p>

@@ -7,7 +7,7 @@ class User(AbstractUser):
 class Alumno(models.Model):
     nombre = models.CharField(max_length=255)
     apellido = models.CharField(max_length=255)
-    dni = models.IntegerField()
+    dni = models.IntegerField(primary_key=True)
     activo = models.BooleanField(default=1)
     # email = models.EmailField(max_length=255)
     # fechaNacimiento = models.DateField()
@@ -15,7 +15,7 @@ class Alumno(models.Model):
 class Profesor(models.Model):
     nombre = models.CharField(max_length=255)
     apellido = models.CharField(max_length=255)
-    dni = models.IntegerField()
+    dni = models.IntegerField(primary_key=True)
     activo = models.BooleanField(default=1)
     # email = models.EmailField(max_length=255)
 

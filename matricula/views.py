@@ -80,33 +80,31 @@ def listarAdmins(request):
 @login_required(login_url='/login')
 def crearAlumno(request):      
     if request.method == "POST":
-        obj = Alumno()
-        obj.nombre = request.POST["nombre"]
-        obj.apellido = request.POST["apellido"]
-        obj.dni = request.POST["dni"]        
-
-        obj.save()
+        Alumno.objects.create(nombre = request.POST["nombre"], apellido = request.POST["apellido"], dni = request.POST["dni"])
+        
         return HttpResponseRedirect("listaalumnos")
 
     return render(request, "matricula/crearalumno.html", {'alumnos': Alumno.objects.all()})
 
 @login_required(login_url='/login')
 def editarAlumno(request, id):
-    alumno = Alumno.objects.get(id=id)   
+    alumno = Alumno.objects.get(dni=id)
     if request.method == "POST":
-        alumno.id = id
-        alumno.nombre = request.POST["nombre"]
-        alumno.apellido = request.POST["apellido"]
-        alumno.dni = request.POST["dni"]   
-
-        alumno.save()
-        return HttpResponseRedirect("../listaalumnos")
-
-    return render(request, "matricula/editaralumno.html", {'alumnos': Alumno.objects.all(), 'form':alumno})
+        if request.POST["dni"] == str(alumno.dni):
+            alumno.nombre = request.POST["nombre"]
+            alumno.apellido = request.POST["apellido"]
+            alumno.dni = request.POST["dni"]
+            alumno.save()
+            return HttpResponseRedirect("../listaalumnos")
+        else:
+            Alumno.objects.update(nombre = request.POST["nombre"], apellido = request.POST["apellido"], dni = request.POST["dni"])
+            return HttpResponseRedirect("../listaalumnos")
+    return render(request, "matricula/editaralumno.html", {'alumnos': Alumno.objects.all(), 'form':alumno,})
+    
 
 @login_required(login_url='/login')
 def desactivarAlumno(request, id):
-    alumno = Alumno.objects.get(id=id)   
+    alumno = Alumno.objects.get(dni=id)   
     if request.method == "POST":        
         if(alumno.activo):
             alumno.activo =  False    
@@ -138,7 +136,7 @@ def crearProfesor(request):
 
 @login_required(login_url='/login')
 def editarDocente(request, id):
-    docente = Profesor.objects.get(id=id)   
+    docente = Profesor.objects.get(dni=id)   
     if request.method == "POST":
         docente.id = id
         docente.nombre = request.POST["nombre"]
