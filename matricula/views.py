@@ -26,7 +26,7 @@ def login_view(request):
         username = request.POST["username"]
         password = request.POST["password"]
         user = authenticate(request, username=username, password=password)
-
+        
         # Check if authentication successful    
         if user is not None:
             login(request, user)
@@ -79,8 +79,49 @@ def register(request):
         return render(request, "matricula/register.html", {'admins': User.objects.all()})
 
 @login_required(login_url='/login')
+def editarAdmin(request, id):
+    administrador = User.objects.get(id=id)
+    if request.method == "POST":
+        if request.POST["username"] == str(administrador.username):
+            administrador.username = request.POST["username"]
+            administrador.first_name = request.POST["first_name"]
+            administrador.last_name = request.POST["last_name"]
+            administrador.email = request.POST["email"]
+            administrador.password = request.POST["password"]
+            confirmation = request.POST["confirmation"]
+            if password != confirmation:
+                return render(request, "matricula/editaradmin.html", {
+                    "message": "Las contraseñas deben coincidir."
+                })
+
+            administrador.save()
+            return HttpResponseRedirect("../listaadmins")
+        else:
+            try:
+                User.objects.update(username = request.POST["username"], first_name = request.POST["first_name"], last_name = request.POST["last_name"], email = request.POST["email"], password = request.POST["password"])
+                return HttpResponseRedirect("../listaadmins")
+            except:
+                mensaje = "error"
+                return render(request, "matricula/editaradmin.html", {'admins': User.objects.all(), 'form':administrador, 'mensaje':mensaje})
+            
+    return render(request, "matricula/editaradmin.html", {'admins': User.objects.all(), 'form':administrador,})
+
+@login_required(login_url='/login')
 def listarAdmins(request):
     return render(request, "matricula/listaadmins.html", {'admins': User.objects.all()})
+
+@login_required(login_url='/login')
+def desactivarAdmin(request, id):
+    administrador = User.objects.get(id=id)   
+    if request.method == "POST":        
+        if(administrador.is_active):
+            administrador.is_active =  False    
+        else:
+            administrador.is_active = True
+
+        administrador.save()
+        return HttpResponseRedirect("../listaadmins")
+    return render(request, "matricula/desactivaradmin.html", {'admins': User.objects.all(), 'form':administrador})
 
 @login_required(login_url='/login')
 def crearAlumno(request):      
