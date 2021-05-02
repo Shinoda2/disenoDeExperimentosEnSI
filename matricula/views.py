@@ -173,7 +173,7 @@ def editarDocente(request, id):
 
 @login_required(login_url='/login')
 def desactivarDocente(request, id):
-    docente = Profesor.objects.get(id=id)   
+    docente = Profesor.objects.get(dni=id)   #switched dni
     if request.method == "POST":        
         if(docente.activo):
             docente.activo =  False    

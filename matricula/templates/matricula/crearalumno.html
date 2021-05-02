@@ -26,6 +26,7 @@
                 <input id="txtDNI" autofocus class="form-control col-sm-6" type="number" name="dni" placeholder="DNI del alumno" max="99999999" min="00000001" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"
                 maxlength="8" required>
                 <p id="errorMessage3" class="row errorMessageStyle" style="display: none;">*El dato ingresado no era válido</p>
+                <p id="errorMessageDuplicate" class="row errorMessageStyle" style="display: none;">*El DNI ingresado ya se encuentra registrado</p>
             </div> 
         </div>
         <div id="confirmationMessage" style="display: none;" class="row">
@@ -153,10 +154,12 @@
         
         if (txtDNI == "" || hasNumber.test(txtDNI) == false) {
             document.getElementById("errorMessage3").style.display = "";
-            document.getElementById("txtDNI").value = "";
+            document.getElementById("txtDNI").value = "";            
         } else {
             dniState = 1;
         }
+
+
 
         if(nombreState && apellidoState && dniState){
             document.getElementById("confirmationMessage").style.display = "";
@@ -178,4 +181,7 @@
         document.getElementById("btnRegister").style.display = "none";
     }
 </script>
+<style>
+    html, body {margin: 0; height: 100%; overflow: hidden}
+</style>
 {% endblock %}
