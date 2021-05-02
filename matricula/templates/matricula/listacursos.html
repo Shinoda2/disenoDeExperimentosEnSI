@@ -2,10 +2,10 @@
 
 {% block body %}
 <!-- buscar y registrar nuevo -->
-<div style="margin-left: 35%; margin-bottom: 30px;">
+<div style="margin-left: 38%; margin-bottom: 30px;">
     <h1 style="font-size: 40px;">Cursos registrados</h1>
 </div>
-<input id="buscar" type="number" placeholder="Búsqueda" class="form-control">
+<input id="buscar" type="text" placeholder="Búsqueda" class="form-control">
 <button id="options" class="btn btn-success" onclick="changeWindow()">NUEVO CURSO</button>
 </div>
 <!-- tabla de datos -->
@@ -93,11 +93,12 @@
     function buscar(inputbuscar) {
         var valorabuscar = (inputbuscar.value).toLowerCase().trim();
         console.log(valorabuscar);
-        var tabla_tr = document.getElementById("tabla").getElementsByTagName("tbody")[0].rows;
+        var tabla_tr = document.getElementById("tabla").getElementsByTagName("tbody")[0].rows;    
         var listaEncontrada = [];
         for (var i = 0; i < tabla_tr.length; i++) {
             var tr = tabla_tr[i];
-            var textotr = (tr.innerText).toLowerCase().substr(tr.innerText.length-10,8);                        
+            var td = tabla_tr[i].getElementsByTagName("td")[0];
+            var textotr = (td.innerText).toLowerCase();   
             tr.className = (textotr.indexOf(valorabuscar) == 0) ? "mostrar" : "ocultar";
             // if(tr.className == "mostrar") {
             //     tr.style.display = "";

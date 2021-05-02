@@ -26,7 +26,6 @@
                 <input id="txtDNI" autofocus class="form-control col-sm-6" type="number" name="dni" placeholder="DNI del alumno" max="99999999" min="00000001" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"
                 maxlength="8" required>
                 <p id="errorMessage3" class="row errorMessageStyle" style="display: none;">*El dato ingresado no era válido</p>
-                <p id="errorMessageDuplicate" class="row errorMessageStyle" style="display: none;">*El DNI ingresado ya se encuentra registrado</p>
             </div> 
         </div>
         <div id="confirmationMessage" style="display: none;" class="row">
@@ -150,16 +149,14 @@
             document.getElementById("txtApellido").value = "";
         } else {
             apellidoState = 1;
-        }
+        }  
         
-        if (txtDNI == "" || hasNumber.test(txtDNI) == false) {
+        if (txtDNI == "" || hasNumber.test(txtDNI) == false || txtDNI > 99999999 || txtDNI < 10000000) {
             document.getElementById("errorMessage3").style.display = "";
             document.getElementById("txtDNI").value = "";            
         } else {
             dniState = 1;
-        }
-
-
+        }        
 
         if(nombreState && apellidoState && dniState){
             document.getElementById("confirmationMessage").style.display = "";
@@ -175,6 +172,7 @@
     const hideConfirmation = () => {
         document.getElementById("confirmationMessage").style.display = "none";
         document.getElementById("registerForm").style.display = "";
+        document.getElementById("formTitle").style.display = "";
 
         document.getElementById("btnShowConfirmation").style.display = "";
         document.getElementById("btnHideConfirmation").style.display = "none";

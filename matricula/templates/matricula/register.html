@@ -2,11 +2,11 @@
 
 {% block body %}
 
-<div id="Form">
+<div id="Form" style="top: 10%;">
     <svg id="exitForm" xmlns="http://www.w3.org/2000/svg" width="15.849" height="15.848" viewBox="0 0 30.849 30.848" onclick="changeWindow()">
     <path id="Icon_metro-cross" data-name="Icon metro-cross" d="M33.138,26.711h0l-9.358-9.358,9.358-9.358h0a.966.966,0,0,0,0-1.363L28.717,2.21a.967.967,0,0,0-1.363,0h0L18,11.568,8.637,2.21h0a.966.966,0,0,0-1.363,0L2.852,6.631a.966.966,0,0,0,0,1.363h0l9.358,9.358L2.852,26.711h0a.966.966,0,0,0,0,1.363l4.421,4.421a.966.966,0,0,0,1.363,0h0L18,23.136l9.358,9.358h0a.966.966,0,0,0,1.363,0l4.421-4.421a.966.966,0,0,0,0-1.363Z" transform="translate(-2.571 -1.928)" fill="#b7b7b7"/>
     </svg>
-    <h2 id="register">Registrar administrador</h2>
+    <h2 id="formTitle" style="margin-left: 28%;">Registrar administrador</h2>
 
     {% if message %}
         <div>{{ message }}</div>
@@ -14,26 +14,50 @@
 
     <form action="{% url 'register' %}" method="post">
         {% csrf_token %}
-        <div class="form-group">
-            <input class="form-control" autofocus type="text" name="username" placeholder="Nombre de Usuario">
+        <div id="registerForm">
+            <div class="form-group row" style="margin-bottom: 0px;">
+                <p class="col-sm-6">Usuario</p>
+                <input id="txtUsuario" class="form-control col-sm-6" autofocus type="text" name="username" placeholder="Nombre de Usuario">
+                <p id="errorMessage1" class="row errorMessageStyle" style="display: none;">*El dato ingresado no era válido</p>
+            </div>
+            <div class="form-group" style="display: none;">
+                <input class="form-control" type="text" name="email" placeholder="Nombres de Administradores" maxlength="25" value="">
+            </div>
+            <div class="form-group row" style="margin-bottom: 0px;">
+                <p class="col-sm-6">Nombres</p>
+                <input id="txtNombre" class="form-control col-sm-6" type="text" name="first_name" placeholder="Nombres de Administrador" maxlength="25">
+                <p id="errorMessage2" class="row errorMessageStyle" style="display: none;">*El dato ingresado no era válido</p>
+            </div>
+            <div class="form-group row" style="margin-bottom: 0px;">
+                <p class="col-sm-6">Apellidos</p>
+                <input id="txtApellido" class="form-control col-sm-6" type="text" name="last_name" placeholder="Apellidos de Administrador" maxlength="25">
+                <p id="errorMessage3" class="row errorMessageStyle" style="display: none;">*El dato ingresado no era válido</p>
+            </div>
+            <div style="height: 20px;"></div>
+            <div class="form-group row" style="margin-bottom: 0px;">
+                <p class="col-sm-6">Contraseña</p>
+                <input id="txtContraseña" class="form-control col-sm-6" type="password" name="password" placeholder="Contraseña">
+                <p id="errorMessage4" class="row errorMessageStyle" style="display: none;">*La contraseña ingresada no era válida</p>
+            </div>
+            <div class="form-group row" style="margin-bottom: 10px;">
+                <p class="col-sm-6">Confirme su contraseña</p>
+                <input id="txtConfirmacion" class="form-control col-sm-6" type="password" name="confirmation" placeholder="Vuelva escribir su contraseña">
+                <p id="errorMessage5" class="row errorMessageStyle" style="display: none;">*Las contraseñas ingresadas no coinciden</p>
+            </div>            
         </div>
-        <div class="form-group" style="display: none;">
-            <input class="form-control" type="text" name="email" placeholder="Nombres de Administradores" maxlength="25" value="">
+        <div id="confirmationMessage" style="display: none;" class="row">
+            <p>Confirmación de registro</p>       
+            <p>¿Está seguro de realizar este registro?</p>       
         </div>
-        <div class="form-group">
-            <input class="form-control" type="text" name="first_name" placeholder="Nombres de Administradores" maxlength="25">
+        <!-- <div id="acceptMessage" style="display: none;" class="row">
+            <p>Registro exitoso</p>       
+        </div> -->
+        <div style="margin-left: 31%; width: 50%;">
+            <input id="btnHideConfirmation" class="btn btn-danger col-sm-4" value="CANCELAR" onclick="hideConfirmation()" style="display: none;" >
+            <input id="btnRegister" class="btn btn-success col-sm-4" type="submit" value="REGISTRAR" style="display: none;" onclick="changeWindow()">
+            <!-- <input id="btnAccept" class="btn btn-success col-sm-8" value="ACEPTAR" style="display: none;" onclick="changeWindow()"> -->
         </div>
-        <div class="form-group">
-            <input class="form-control" type="text" name="last_name" placeholder="Apellidos de Administradores" maxlength="25">
-        </div>
-        <div style="height: 20px;"></div>
-        <div class="form-group">
-            <input class="form-control" type="password" name="password" placeholder="Password">
-        </div>
-        <div class="form-group">
-            <input class="form-control" type="password" name="confirmation" placeholder="Confirm Password">
-        </div>
-        <input class="btn btn-success" type="submit" value="REGISTRAR">
+        <input id="btnShowConfirmation" class="btn btn-success" value="REGISTRAR" onclick="showConfirmation()" style="margin-left: 35%; margin-top: 14px;">
     </form>
 </div>
 <div id="blackScreen"></div>
@@ -99,6 +123,89 @@
     const changeWindow = () => {
         window.location.pathname = '../listaadmins';
     }
-</script>
+    const showConfirmation = () => {
+        document.getElementById("errorMessage1").style.display = "none";
+        document.getElementById("errorMessage2").style.display = "none";
+        document.getElementById("errorMessage3").style.display = "none";
+        document.getElementById("errorMessage4").style.display = "none";
+        document.getElementById("errorMessage5").style.display = "none";
 
+        var usuarioState;
+        var nombreState;
+        var apellidoState;
+        var passwordState;
+        var confirmationState;
+        
+        var txtUsuario = document.getElementById("txtUsuario").value;
+        var txtNombre = document.getElementById("txtNombre").value;
+        var txtApellido = document.getElementById("txtApellido").value;
+        var txtContraseña = document.getElementById("txtContraseña").value;
+        var txtConfirmacion = document.getElementById("txtConfirmacion").value;
+        
+        // regex validation
+        var hasNumber = /\d/;
+        var hasLetter = /[a-z]/
+        var format = /[`!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?~]/;        
+
+        if (txtUsuario.length < 6 || txtUsuario.length > 9 || format.test(txtUsuario) || txtUsuario == " "){
+            document.getElementById("errorMessage1").style.display = "";
+            document.getElementById("txtUsuario").value = "";
+        } else {
+            usuarioState = 1;
+        }
+
+        if (txtNombre == "" || hasNumber.test(txtNombre) || format.test(txtNombre)) {
+            document.getElementById("errorMessage2").style.display = "";
+            document.getElementById("txtNombre").value = "";
+        } else {
+            nombreState = 1;
+        }
+
+        if (txtApellido == "" || hasNumber.test(txtApellido) || format.test(txtApellido)) {
+            document.getElementById("errorMessage3").style.display = "";
+            document.getElementById("txtApellido").value = "";
+        } else {
+            apellidoState = 1;
+        }
+
+        if (txtContraseña == "" || txtContraseña.length < 8 || txtContraseña.length > 8 || !hasNumber.test(txtContraseña) || !hasLetter.test(txtContraseña)){
+            document.getElementById("errorMessage4").style.display = "";
+            document.getElementById("txtContraseña").value = "";
+            document.getElementById("txtConfirmacion").value = "";
+        } else {
+            passwordState = 1;
+        }
+
+        if (txtConfirmacion != txtContraseña){
+            document.getElementById("errorMessage5").style.display = "";
+            document.getElementById("txtContraseña").value = "";
+            document.getElementById("txtConfirmacion").value = "";
+        } else {
+            confirmationState = 1;
+        }
+
+        if(usuarioState && nombreState && apellidoState && passwordState && confirmationState){
+            document.getElementById("confirmationMessage").style.display = "";
+            document.getElementById("registerForm").style.display = "none";
+            document.getElementById("formTitle").style.display = "none";
+
+            document.getElementById("btnShowConfirmation").style.display = "none";
+            document.getElementById("btnHideConfirmation").style.display = "";
+            document.getElementById("btnRegister").style.display = ""; 
+        } 
+    }
+
+    const hideConfirmation = () => {
+        document.getElementById("confirmationMessage").style.display = "none";
+        document.getElementById("registerForm").style.display = "";
+        document.getElementById("formTitle").style.display = "";
+
+        document.getElementById("btnShowConfirmation").style.display = "";
+        document.getElementById("btnHideConfirmation").style.display = "none";
+        document.getElementById("btnRegister").style.display = "none";
+    }
+</script>
+<style>
+    html, body {margin: 0; height: 100%; overflow: hidden}
+</style>
 {% endblock %}

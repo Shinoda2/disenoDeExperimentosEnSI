@@ -5,7 +5,7 @@
 <div style="margin-left: 31%; margin-bottom: 30px;">
     <h1 style="font-size: 40px;">Administradores registrados</h1>
 </div>
-<input id="buscar" type="number" placeholder="Búsqueda" class="form-control">
+<input id="buscar" type="text" placeholder="Búsqueda" class="form-control">
 <button id="options" class="btn btn-success" onclick="changeWindow()">NUEVO ADMINISTRADOR</button>
 </div>
 <!-- tabla de datos -->
@@ -87,7 +87,8 @@
         var listaEncontrada = [];
         for (var i = 0; i < tabla_tr.length; i++) {
             var tr = tabla_tr[i];
-            var textotr = (tr.innerText).toLowerCase().substr(tr.innerText.length-10,8);                        
+            var td = tabla_tr[i].getElementsByTagName("td")[0];
+            var textotr = (td.innerText).toLowerCase();                        
             tr.className = (textotr.indexOf(valorabuscar) == 0) ? "mostrar" : "ocultar";
             // if(tr.className == "mostrar") {
             //     tr.style.display = "";

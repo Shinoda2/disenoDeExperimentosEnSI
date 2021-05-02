@@ -157,10 +157,14 @@
     const hideConfirmation = () => {
         document.getElementById("confirmationMessage").style.display = "none";
         document.getElementById("registerForm").style.display = "";
+        document.getElementById("formTitle").style.display = "";
 
         document.getElementById("btnShowConfirmation").style.display = "";
         document.getElementById("btnHideConfirmation").style.display = "none";
         document.getElementById("btnRegister").style.display = "none";
     }
 </script>
+<style>
+    html, body {margin: 0; height: 100%; overflow: hidden}
+</style>
 {% endblock %}

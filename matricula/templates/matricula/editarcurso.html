@@ -13,12 +13,12 @@
         <div id="registerForm">
             <div class="form-group row">
                 <p class="col-sm-6">Nombre del curso</p>
-                <input value="{{form.nombreCurso}}" autofocus class="form-control col-sm-6" type="text" name="nombreCurso" placeholder="Nombre del Curso" maxlength="50" required> 
+                <input id="txtNombreCurso" value="{{form.nombreCurso}}" autofocus class="form-control col-sm-6" type="text" name="nombreCurso" placeholder="Nombre del Curso" maxlength="50" required> 
                 <p id="errorMessage1" class="row errorMessageStyle" style="display: none;">*El dato ingresado no era válido</p>
             </div>
             <div class="form-group row">
                 <p class="col-sm-6">Docente</p>
-                <select class="form-control col-sm-6" name="profesor" placeholder="Docente" required>
+                <select id="selectDocente" class="form-control col-sm-6" name="profesor" placeholder="Docente" required>
                     <option disabled selected value> -- Selecciona un docente -- </option>
                     <option hidden selected="selected" value="{{form.profesor.dni}}">{{form.profesor.nombre}} {{form.profesor.apellido}}</option>
                     {% for profesor in profesores %}
@@ -31,8 +31,7 @@
             </div>
             <div class="form-group row">
                 <p class="col-sm-6">Vacantes</p>                
-                <input value="{{form.vacantes}}" autofocus class="form-control col-sm-6" type="number" name="vacantes" placeholder="Vacantes" max="10" min="0" required> 
-                <p id="errorMessage3" class="row errorMessageStyle" style="display: none;">*El dato ingresado no era válido</p>
+                <input value="{{form.vacantes}}" autofocus class="form-control col-sm-6" type="number" name="vacantes" placeholder="Vacantes" max="10" min="0" value="10" readonly required> 
             </div>
         </div>
         <div id="confirmationMessage" style="display: none;" class="row">
@@ -41,10 +40,10 @@
         </div>
         <div style="margin-left: 31%; width: 50%;">
             <input id="btnHideConfirmation" class="btn btn-danger col-sm-4" value="CANCELAR" onclick="hideConfirmation()" style="display: none;" >
-            <input id="btnRegister" class="btn btn-success col-sm-4" type="submit" value="REGISTRAR" style="display: none;" onclick="changeWindow()">
+            <input id="btnRegister" class="btn btn-success col-sm-4" type="submit" value="ACTUALIZAR" style="display: none;" onclick="changeWindow()">
             <!-- <input id="btnAccept" class="btn btn-success col-sm-8" value="ACEPTAR" style="display: none;" onclick="changeWindow()"> -->
         </div>
-        <input id="btnShowConfirmation" class="btn btn-success" value="REGISTRAR" onclick="showConfirmation()" style="margin-left: 35%; margin-top: 14px;">
+        <input id="btnShowConfirmation" class="btn btn-success" value="ACTUALIZAR" onclick="showConfirmation()" style="margin-left: 35%; margin-top: 14px;">
     </form>
 
 </div>
@@ -120,28 +119,53 @@
     const showConfirmation = () => {
         document.getElementById("errorMessage1").style.display = "none";
         document.getElementById("errorMessage2").style.display = "none";
-        document.getElementById("errorMessage3").style.display = "none";        
         
+        var nombreCursoState;
+        var docenteState;
+
+        var txtNombreCurso = document.getElementById("txtNombreCurso").value;
+        var select = document.getElementById("selectDocente");
+        var selectDocente = select.options[select.selectedIndex].text
+
         var hasNumber = /\d/;
         var format = /[`!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?~]/;        
-
         
-        document.getElementById("confirmationMessage").style.display = "";
-        document.getElementById("registerForm").style.display = "none";
-        document.getElementById("formTitle").style.display = "none";
+        if(txtNombreCurso == ""){
+            document.getElementById("errorMessage1").style.display = "";
+            document.getElementById("txtNombreCurso").value = "";
+        } else {
+            nombreCursoState = 1;
+        }
 
-        document.getElementById("btnShowConfirmation").style.display = "none";
-        document.getElementById("btnHideConfirmation").style.display = "";
-        document.getElementById("btnRegister").style.display = ""; 
+        if (selectDocente == "-- Selecciona un docente --"){ 
+            document.getElementById("errorMessage2").style.display = "";            
+        }
+        else {
+            docenteState = 1;
+        }
+
+        if(nombreCursoState && docenteState){
+            document.getElementById("confirmationMessage").style.display = "";
+            document.getElementById("registerForm").style.display = "none";
+            document.getElementById("formTitle").style.display = "none";
+
+            document.getElementById("btnShowConfirmation").style.display = "none";
+            document.getElementById("btnHideConfirmation").style.display = "";
+            document.getElementById("btnRegister").style.display = ""; 
+        }
     }
 
     const hideConfirmation = () => {
         document.getElementById("confirmationMessage").style.display = "none";
         document.getElementById("registerForm").style.display = "";
+        document.getElementById("formTitle").style.display = "";
 
         document.getElementById("btnShowConfirmation").style.display = "";
         document.getElementById("btnHideConfirmation").style.display = "none";
         document.getElementById("btnRegister").style.display = "none";
     }
 </script>
+<style>
+    html, body {margin: 0; height: 100%; overflow: hidden}
+</style>
 {% endblock %}

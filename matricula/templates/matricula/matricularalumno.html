@@ -16,7 +16,9 @@
                 <select class="form-control col-sm-6" name="curso" placeholder="Curso" required>
                     <option disabled selected value> -- Selecciona un curso -- </option>
                     {% for curso in cursos %}
+                    {% if curso.activo is True %}
                         <option value="{{ curso.id }}">{{ curso.nombreCurso }}</option>
+                    {% endif %}
                     {% endfor %}
                 </select>
                 <p id="errorMessage1" class="row errorMessageStyle" style="display: none;">*El dato ingresado no era válido</p>
@@ -26,7 +28,9 @@
                 <select class="form-control col-sm-6" name="alumno" placeholder="Alumno" required>
                     <option disabled selected value> -- Selecciona un alumno -- </option>
                     {% for alumno in alumnos %}
+                    {% if alumno.activo is True %}
                         <option value="{{ alumno.dni }}">{{ alumno.nombre }} {{ alumno.apellido }}</option>
+                    {% endif %}
                     {% endfor %}
                 </select>
                 <p id="errorMessage2" class="row errorMessageStyle" style="display: none;">*El dato ingresado no era válido</p>
