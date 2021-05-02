@@ -26,6 +26,7 @@
                 <input id="txtDNI" autofocus class="form-control col-sm-6" type="number" name="dni" placeholder="DNI del alumno" max="99999999" min="00000001" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"
                 maxlength="8" required>
                 <p id="errorMessage3" class="row errorMessageStyle" style="display: none;">*El dato ingresado no era válido</p>
+                <p id="errorMessageDuplicate" class="row errorMessageStyle" style="display: none;">*El DNI ingresado ya se encuentra registrado</p>
             </div> 
         </div>
         <div id="confirmationMessage" style="display: none;" class="row">
@@ -129,6 +130,9 @@
         var nombreState;
         var apellidoState;
         var dniState;
+        var duplicateState;
+
+        var listaDNIs = [];
         
         var txtNombre = document.getElementById("txtNombre").value;
         var txtApellido = document.getElementById("txtApellido").value;
@@ -156,9 +160,25 @@
             document.getElementById("txtDNI").value = "";            
         } else {
             dniState = 1;
-        }        
+        }      
 
-        if(nombreState && apellidoState && dniState){
+        var tabla_tr = document.getElementById("tabla").getElementsByTagName("tbody")[0].rows;
+        for (var i = 0; i < tabla_tr.length; i++) {
+            var tr = tabla_tr[i];
+            var td = tabla_tr[i].getElementsByTagName("td")[2];
+            var textotd = (td.innerText);
+            listaDNIs.push(textotd);            
+        }
+        console.log(listaDNIs);
+
+        if(listaDNIs.includes(txtDNI)){
+            document.getElementById("errorMessageDuplicate").style.display = "";
+            document.getElementById("txtDNI").value = "";            
+        } else {
+            duplicateState = 1;
+        }
+
+        if(nombreState && apellidoState && dniState && duplicateState){
             document.getElementById("confirmationMessage").style.display = "";
             document.getElementById("registerForm").style.display = "none";
             document.getElementById("formTitle").style.display = "none";

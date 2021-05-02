@@ -19,6 +19,7 @@
                 <p class="col-sm-6">Usuario</p>
                 <input id="txtUsuario" class="form-control col-sm-6" autofocus type="text" name="username" placeholder="Nombre de Usuario">
                 <p id="errorMessage1" class="row errorMessageStyle" style="display: none;">*El dato ingresado no era válido</p>
+                <p id="errorMessageDuplicate" class="row errorMessageStyle" style="display: none;">*El usuario ingresado ya se encuentra registrado</p>
             </div>
             <div class="form-group" style="display: none;">
                 <input class="form-control" type="text" name="email" placeholder="Nombres de Administradores" maxlength="25" value="">
@@ -135,6 +136,9 @@
         var apellidoState;
         var passwordState;
         var confirmationState;
+        var duplicateState;
+
+        var listaUsuarios = [];
         
         var txtUsuario = document.getElementById("txtUsuario").value;
         var txtNombre = document.getElementById("txtNombre").value;
@@ -184,7 +188,23 @@
             confirmationState = 1;
         }
 
-        if(usuarioState && nombreState && apellidoState && passwordState && confirmationState){
+        var tabla_tr = document.getElementById("tabla").getElementsByTagName("tbody")[0].rows;
+        for (var i = 0; i < tabla_tr.length; i++) {
+            var tr = tabla_tr[i];
+            var td = tabla_tr[i].getElementsByTagName("td")[0];
+            var textotd = (td.innerText);
+            listaUsuarios.push(textotd);            
+        }
+        console.log(listaUsuarios);
+
+        if(listaUsuarios.includes(txtUsuario)){
+            document.getElementById("errorMessageDuplicate").style.display = "";
+            document.getElementById("txtUsuario").value = "";            
+        } else {
+            duplicateState = 1;
+        }
+
+        if(usuarioState && nombreState && apellidoState && passwordState && confirmationState && duplicateState){
             document.getElementById("confirmationMessage").style.display = "";
             document.getElementById("registerForm").style.display = "none";
             document.getElementById("formTitle").style.display = "none";

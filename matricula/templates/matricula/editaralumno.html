@@ -24,7 +24,7 @@
             <div class="form-group row">
                 <p class="col-sm-6">DNI</p>
                 <input id="txtDNI" value="{{form.dni}}" autofocus class="form-control col-sm-6" type="number" name="dni" placeholder="DNI del alumno" max="99999999" min="00000001" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"
-                maxlength="8" required>
+                maxlength="8" readonly required>
                 <p id="errorMessage3" class="row errorMessageStyle" style="display: none;">*El dato ingresado no era válido</p>
             </div> 
         </div>

@@ -212,13 +212,16 @@ def crearCurso(request):
 def editarCurso(request, id):
     curso = Curso.objects.get(id=id)   
     if request.method == "POST":
-        curso.id = id
-        curso.nombreCurso = request.POST["nombreCurso"]
-        curso.profesor = Profesor.objects.get(dni = int(request.POST["profesor"]))
-        curso.vacantes = request.POST["vacantes"]   
-
-        curso.save()
-        return HttpResponseRedirect("../listacursos")
+        try:
+            curso.nombreCurso = request.POST["nombreCurso"]
+            curso.profesor = Profesor.objects.get(dni = int(request.POST["profesor"]))
+            curso.vacantes = request.POST["vacantes"]   
+            
+            curso.save()
+            return HttpResponseRedirect("../listacursos")
+        except:
+            mensaje: "error"
+            return render(request, "matricula/editarcurso.html", {'profesores': Profesor.objects.all(), 'cursos': curso.objects.all(), 'form':curso, 'mensaje':mensaje})
 
     return render(request, "matricula/editarcurso.html", {'profesores': Profesor.objects.all(), 'cursos': Curso.objects.all(), 'form':curso})
 
@@ -281,7 +284,7 @@ def matricularAlumno(request):
         #     'mensaje':mensaje
         # })
         except:
-            mensaje = "Alumno ya se matriculó."
+            mensaje = f"Alumno {obj.alumno.nombre} {obj.alumno.apellido} ya se encuentra matriculado en el curso {obj.curso.nombreCurso} para el semestre {obj.semestre}."
             return render(request, "matricula/matricularalumno.html", {
             'cursos': Curso.objects.all(),
             'alumnos': Alumno.objects.all(),

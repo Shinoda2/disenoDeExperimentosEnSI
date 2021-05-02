@@ -2,48 +2,49 @@
 
 {% block body %}
 
-<div id="Form">
+<div id="Form" style="top:70px;">
     <svg id="exitForm" xmlns="http://www.w3.org/2000/svg" width="15.849" height="15.848" viewBox="0 0 30.849 30.848" onclick="changeWindow()">
     <path id="Icon_metro-cross" data-name="Icon metro-cross" d="M33.138,26.711h0l-9.358-9.358,9.358-9.358h0a.966.966,0,0,0,0-1.363L28.717,2.21a.967.967,0,0,0-1.363,0h0L18,11.568,8.637,2.21h0a.966.966,0,0,0-1.363,0L2.852,6.631a.966.966,0,0,0,0,1.363h0l9.358,9.358L2.852,26.711h0a.966.966,0,0,0,0,1.363l4.421,4.421a.966.966,0,0,0,1.363,0h0L18,23.136l9.358,9.358h0a.966.966,0,0,0,1.363,0l4.421-4.421a.966.966,0,0,0,0-1.363Z" transform="translate(-2.571 -1.928)" fill="#b7b7b7"/>
     </svg> 
     <h2 id="formTitle">Registrar Matrícula</h2>
-
+    <p style="color: red;">{{completo}}</p>
+    <p style="color: red;">{{mensaje}}</p>
     <form action="{% url 'matricularalumno' %}" method="post">
         {% csrf_token %}
         <div id="registerForm">
             <div class="form-group row">
                 <p class="col-sm-6">Cursos</p>
-                <select class="form-control col-sm-6" name="curso" placeholder="Curso" required>
-                    <option disabled selected value> -- Selecciona un curso -- </option>
+                <select id="selectCurso" class="form-control col-sm-6" name="curso" placeholder="Curso" required>
+                    <option disabled selected value>-- Selecciona un curso --</option>
                     {% for curso in cursos %}
                     {% if curso.activo is True %}
                         <option value="{{ curso.id }}">{{ curso.nombreCurso }}</option>
                     {% endif %}
                     {% endfor %}
                 </select>
-                <p id="errorMessage1" class="row errorMessageStyle" style="display: none;">*El dato ingresado no era válido</p>
+                <p id="errorMessage1" class="row errorMessageStyle" style="display: none; margin-top: -20px; margin-left: 80%;">*Este campo es obligatorio</p>
             </div>
-            <div class="form-group row">
+            <div class="form-group row"> 
                 <p class="col-sm-6">Alumnos</p>
-                <select class="form-control col-sm-6" name="alumno" placeholder="Alumno" required>
-                    <option disabled selected value> -- Selecciona un alumno -- </option>
+                <select id="selectAlumno" class="form-control col-sm-6" name="alumno" placeholder="Alumno" required>
+                    <option disabled selected value>-- Selecciona un alumno --</option>
                     {% for alumno in alumnos %}
                     {% if alumno.activo is True %}
                         <option value="{{ alumno.dni }}">{{ alumno.nombre }} {{ alumno.apellido }}</option>
                     {% endif %}
                     {% endfor %}
                 </select>
-                <p id="errorMessage2" class="row errorMessageStyle" style="display: none;">*El dato ingresado no era válido</p>
+                <p id="errorMessage2" class="row errorMessageStyle" style="display: none; margin-top: -20px; margin-left: 80%;">*Este campo es obligatorio</p>
             </div>
             <div class="form-group row">
                 <p class="col-sm-6">Semestre</p>                
-                <select class="form-control col-sm-3" style="display: inline; margin-left: 25%;" name="semestre" placeholder="Semestre" required>
+                <select id="selectSemestre" class="form-control col-sm-3" style="display: inline; margin-left: 25%;" name="semestre" placeholder="Semestre" required>
                     <option value="" disabled selected value>Selecciona un semestre</option> 
                     <option value="2020-0">2020-0</option> 
                    <option value="2020-1">2020-1</option> 
                    <option value="2020-2">2020-2</option> 
                 </select>
-                <p id="errorMessage3" class="row errorMessageStyle" style="display: none;">*El dato ingresado no era válido</p>
+                <p id="errorMessage3" class="row errorMessageStyle" style="display: none; margin-top: -20px; margin-left: 80%;">*Este campo es obligatorio</p>
             </div>
         </div>
         <div id="confirmationMessage" style="display: none;" class="row">
@@ -123,33 +124,70 @@
 
 <script>
     const changeWindow = () => {
-        window.history.back();    
+        window.location.pathname = '../listamatriculas';   
     }
     const showConfirmation = () => {
         document.getElementById("errorMessage1").style.display = "none";
         document.getElementById("errorMessage2").style.display = "none";
         document.getElementById("errorMessage3").style.display = "none";        
-        
+
         var hasNumber = /\d/;
         var format = /[`!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?~]/;        
-
         
-        document.getElementById("confirmationMessage").style.display = "";
-        document.getElementById("registerForm").style.display = "none";
-        document.getElementById("formTitle").style.display = "none";
+        var alumnoState;
+        var cursoState;
+        var semestreState;
 
-        document.getElementById("btnShowConfirmation").style.display = "none";
-        document.getElementById("btnHideConfirmation").style.display = "";
-        document.getElementById("btnRegister").style.display = ""; 
+        var select1 = document.getElementById("selectCurso");
+        var selectCurso = select1.options[select1.selectedIndex].text
+        var select2 = document.getElementById("selectAlumno");
+        var selectAlumno = select2.options[select2.selectedIndex].text
+        var select3 = document.getElementById("selectSemestre");
+        var selectSemestre = select3.options[select3.selectedIndex].text
+
+        if (selectCurso == "-- Selecciona un curso --"){ 
+            document.getElementById("errorMessage1").style.display = "";            
+        }
+        else {
+            cursoState = 1;
+        }
+
+        if (selectAlumno == "-- Selecciona un alumno --"){ 
+            document.getElementById("errorMessage2").style.display = "";            
+        }
+        else {
+            alumnoState = 1;
+        }
+
+        if (selectSemestre == "Selecciona un semestre"){ 
+            document.getElementById("errorMessage3").style.display = "";            
+        }
+        else {
+            semestreState = 1;
+        }
+
+        if(cursoState && alumnoState && semestreState){
+            document.getElementById("confirmationMessage").style.display = "";
+            document.getElementById("registerForm").style.display = "none";
+            document.getElementById("formTitle").style.display = "none";
+
+            document.getElementById("btnShowConfirmation").style.display = "none";
+            document.getElementById("btnHideConfirmation").style.display = "";
+            document.getElementById("btnRegister").style.display = ""; 
+        }
     }
 
     const hideConfirmation = () => {
         document.getElementById("confirmationMessage").style.display = "none";
         document.getElementById("registerForm").style.display = "";
+        document.getElementById("formTitle").style.display = "";
 
         document.getElementById("btnShowConfirmation").style.display = "";
         document.getElementById("btnHideConfirmation").style.display = "none";
         document.getElementById("btnRegister").style.display = "none";
     }
 </script>
+<style>
+    html, body {margin: 0; height: 100%; overflow: hidden}
+</style>
 {% endblock %}

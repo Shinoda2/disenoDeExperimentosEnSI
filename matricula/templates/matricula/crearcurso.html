@@ -15,6 +15,7 @@
                 <p class="col-sm-6">Nombre del curso</p>
                 <input id="txtNombreCurso" autofocus class="form-control col-sm-6" type="text" name="nombreCurso" placeholder="Nombre del Curso" maxlength="50" required> 
                 <p id="errorMessage1" class="row errorMessageStyle" style="display: none;">*El dato ingresado no era válido</p>
+                <p id="errorMessageDuplicate" class="row errorMessageStyle" style="display: none;">*El nombre del curso ingresado ya se encuentra registrado</p>
             </div>
             <div class="form-group row">
                 <p class="col-sm-6">Docente</p>
@@ -121,6 +122,9 @@
         
         var nombreCursoState;
         var docenteState;
+        var duplicateState;
+
+        var listaNombresCursos = [];
 
         var txtNombreCurso = document.getElementById("txtNombreCurso").value;
         var select = document.getElementById("selectDocente");
@@ -143,7 +147,23 @@
             docenteState = 1;
         }
 
-        if(nombreCursoState && docenteState){
+        var tabla_tr = document.getElementById("tabla").getElementsByTagName("tbody")[0].rows;
+        for (var i = 0; i < tabla_tr.length; i++) {
+            var tr = tabla_tr[i];
+            var td = tabla_tr[i].getElementsByTagName("td")[0];
+            var textotd = (td.innerText);
+            listaNombresCursos.push(textotd);            
+        }
+        console.log(listaNombresCursos);
+
+        if(listaNombresCursos.includes(txtNombreCurso)){
+            document.getElementById("errorMessageDuplicate").style.display = "";
+            document.getElementById("txtNombreCurso").value = "";            
+        } else {
+            duplicateState = 1;
+        }
+
+        if(nombreCursoState && docenteState && duplicateState){
             document.getElementById("confirmationMessage").style.display = "";
             document.getElementById("registerForm").style.display = "none";
             document.getElementById("formTitle").style.display = "none";
