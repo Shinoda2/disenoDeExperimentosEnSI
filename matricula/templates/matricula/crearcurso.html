@@ -22,7 +22,7 @@
                     <option disabled selected value> -- Selecciona un docente -- </option>
                     {% for profesor in profesores %}
                     {% if profesor.activo %}
-                        <option value="{{ profesor.id }}">{{ profesor.nombre }} {{ profesor.apellido }}</option>
+                        <option value="{{ profesor.dni }}">{{ profesor.nombre }} {{ profesor.apellido }}</option>
                     {% endif %}
                     {% endfor %}
                 </select>

@@ -193,7 +193,7 @@ def listarDocentes(request):
 def crearCurso(request):
     if request.method == "POST":
         try:
-            Curso.objects.create(nombreCurso = request.POST["nombreCurso"], profesor = Profesor.objects.get(id = int(request.POST["profesor"])), vacantes = request.POST["vacantes"], activo = True)  
+            Curso.objects.create(nombreCurso = request.POST["nombreCurso"], profesor = Profesor.objects.get(dni = int(request.POST["profesor"])), vacantes = request.POST["vacantes"], activo = True)  
 
             return HttpResponseRedirect("listacursos")
         except:
@@ -214,7 +214,7 @@ def editarCurso(request, id):
     if request.method == "POST":
         curso.id = id
         curso.nombreCurso = request.POST["nombreCurso"]
-        curso.profesor = Profesor.objects.get(id = int(request.POST["profesor"]))
+        curso.profesor = Profesor.objects.get(dni = int(request.POST["profesor"]))
         curso.vacantes = request.POST["vacantes"]   
 
         curso.save()
