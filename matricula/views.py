@@ -61,7 +61,7 @@ def register(request):
         confirmation = request.POST["confirmation"]
         if password != confirmation:
             return render(request, "matricula/register.html", {
-                "message": "Passwords must match."
+                "message": "Las contraseñas deben coincidir."
             })
 
         # Attempt to create new user
@@ -72,7 +72,7 @@ def register(request):
             user.save()
         except IntegrityError:
             return render(request, "matricula/register.html", {
-                "message": "Username already taken."
+                "message": "El usuario ingresado ya se encuentra registrado."
             })
         return HttpResponseRedirect(reverse("register"))
     else:
@@ -85,9 +85,14 @@ def listarAdmins(request):
 @login_required(login_url='/login')
 def crearAlumno(request):      
     if request.method == "POST":
-        Alumno.objects.create(nombre = request.POST["nombre"], apellido = request.POST["apellido"], dni = request.POST["dni"])
+        try:
+            Alumno.objects.create(nombre = request.POST["nombre"], apellido = request.POST["apellido"], dni = request.POST["dni"])
         
-        return HttpResponseRedirect("listaalumnos")
+            return HttpResponseRedirect("listaalumnos")
+        except:
+            errorCrear = "El dni utilizado ya se encuentra registrado."
+            return render(request, "matricula/crearalumno.html", {'alumnos': Alumno.objects.all(), 'errorcrear': errorCrear})
+        
 
     return render(request, "matricula/crearalumno.html", {'alumnos': Alumno.objects.all()})
 
@@ -134,8 +139,13 @@ def listarAlumnos(request):
 @login_required(login_url='/login')
 def crearProfesor(request):
     if request.method == "POST":
-        Profesor.objects.create(nombre = request.POST["nombre"], apellido = request.POST["apellido"], dni = request.POST["dni"])
-        return HttpResponseRedirect("listadocentes")
+        try:
+            Profesor.objects.create(nombre = request.POST["nombre"], apellido = request.POST["apellido"], dni = request.POST["dni"])
+            return HttpResponseRedirect("listadocentes")
+        except:
+            errorCrear = "El dni utilizado ya se encuentra registrado."
+            return render(request, "matricula/crearprofesor.html", {'docentes': Profesor.objects.all(), 'errorcrear': errorCrear})
+        
 
     return render(request, "matricula/crearprofesor.html", {'docentes': Profesor.objects.all()})
 
@@ -182,15 +192,17 @@ def listarDocentes(request):
 @login_required(login_url='/login')
 def crearCurso(request):
     if request.method == "POST":
-        obj = Curso()
-        obj.nombreCurso = request.POST["nombreCurso"]
-        obj.profesor = Profesor.objects.get(id = int(request.POST["profesor"]))
-        obj.vacantes = request.POST["vacantes"]
-        obj.activo = True        
+        try:
+            Curso.objects.create(nombreCurso = request.POST["nombreCurso"], profesor = Profesor.objects.get(id = int(request.POST["profesor"])), vacantes = request.POST["vacantes"], activo = True)  
 
-        return HttpResponseRedirect("listacursos")
-        obj.save()
-
+            return HttpResponseRedirect("listacursos")
+        except:
+            errorCrear = "El curso ingresado ya se encuentra registrado."
+            return render(request, "matricula/crearcurso.html", {
+            'profesores': Profesor.objects.all(), 
+            'cursos': Curso.objects.all(),
+            'errorcrear': errorCrear
+            })
     return render(request, "matricula/crearcurso.html", {
         'profesores': Profesor.objects.all(), 
         'cursos': Curso.objects.all()
@@ -248,22 +260,36 @@ def matricularAlumno(request):
         obj.alumno = Alumno.objects.get(dni = int(request.POST["alumno"]))
         obj.semestre = request.POST["semestre"]
 
-
-        if len(listaalumnos) < objCurso.vacantes :            
-            obj.save()
-            return HttpResponseRedirect("listamatriculas")
+        try:
+            if len(listaalumnos) < objCurso.vacantes :            
+                obj.save()
+                return HttpResponseRedirect("listamatriculas")
         #     return render(request, "matricula/matricularalumno.html", {
         #     'cursos': Curso.objects.all(),
         #     'alumnos': Alumno.objects.all()
         # })
-        elif len(listaalumnos) == objCurso.vacantes:
-            mensaje = "Ya no hay vacantes en este curso."
-            return HttpResponseRedirect("listamatriculas")
+            elif len(listaalumnos) == objCurso.vacantes:
+                completo = "Ya no hay vacantes en este curso."
+                return render(request, "matricula/matricularalumno.html", {
+                'cursos': Curso.objects.all(),
+                'alumnos': Alumno.objects.all(),
+                'completo': completo
+                })
         #     return render(request, "matricula/matricularalumno.html", {
         #     'cursos': Curso.objects.all(),
         #     'alumnos': Alumno.objects.all(),
         #     'mensaje':mensaje
         # })
+        except:
+            mensaje = "Alumno ya se matriculó."
+            return render(request, "matricula/matricularalumno.html", {
+            'cursos': Curso.objects.all(),
+            'alumnos': Alumno.objects.all(),
+            'mensaje': mensaje
+            })
+
+
+        
     return render(request, "matricula/matricularalumno.html", {
             'cursos': Curso.objects.all(),
             'alumnos': Alumno.objects.all()
