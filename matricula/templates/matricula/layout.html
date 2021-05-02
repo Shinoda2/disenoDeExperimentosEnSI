@@ -52,7 +52,7 @@
             {% if user.is_authenticated %}
                 Bienvenido administrador,  <strong>{{ user.username }}</strong>.
             {% else %}
-                Not signed in.
+                Por favor,<a class="nav-link" href="{% url 'login'%}" style="display: inline;">Ingrese al sistema</a>
             {% endif %}
         </div>
         <!-- <ul class="nav">

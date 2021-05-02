@@ -1,24 +1,24 @@
 {% extends "matricula/layout.html" %}
 
 {% block body %}
-
-    <h2>Login</h2>
-
-    {% if message %}
-        <div>{{ message }}</div>
-    {% endif %}
-
-    <form action="{% url 'login' %}" method="post">
-        {% csrf_token %}
-        <div class="form-group">
-            <input autofocus class="form-control" type="text" name="username" placeholder="Username">
-        </div>
-        <div class="form-group">
-            <input class="form-control" type="password" name="password" placeholder="Password">
-        </div>
-        <input class="btn btn-primary" type="submit" value="Login">
-    </form>
-
-    Don't have an account? <a href="{% url 'register' %}">Register here.</a>
-
+    <div id="LoginScreen">
+        <div id="Form" style="width: 50%; margin-left: 25%; height: 60%; padding-top: 50px; top: 12%;">
+            <h2 style="margin-left: 34%;">¡Inicia Sesión!</h2>
+            {% if message %}
+                <div style="color: red;">{{ message }}</div>
+            {% endif %}
+            <form action="{% url 'login' %}" method="post">
+                {% csrf_token %}
+                <div class="form-group">
+                    <input autofocus class="form-control fix" type="text" name="username" placeholder="Usuario" style="width: 60%; margin-left: 20%;">
+                </div>
+                <div class="form-group">
+                    <input class="form-control fix" type="password" name="password" placeholder="Contraseña" style="width: 60%; margin-left: 20%;">
+                </div>
+                <input style="margin-left: 43%; margin-top: 50px;" class="btn btn-success" type="submit" value="INICIAR">
+            </div>
+            </form>        
+    </div>
 {% endblock %}
+<style>    
+</style>

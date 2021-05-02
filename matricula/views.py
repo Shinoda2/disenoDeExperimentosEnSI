@@ -27,14 +27,19 @@ def login_view(request):
         password = request.POST["password"]
         user = authenticate(request, username=username, password=password)
 
-        # Check if authentication successful
+        # Check if authentication successful    
         if user is not None:
             login(request, user)
             return HttpResponseRedirect(reverse("index"))
+        elif (username is not "" or password is not ""):            
+            return render(request, "matricula/login.html", {
+                "message": "*El nombre de usuario o contraseña son incorrectos. Inténtelo de nuevo."
+            })
         else:
             return render(request, "matricula/login.html", {
-                "message": "Invalid username and/or password."
-            })
+            "message": "*Introduzca un nombre de usuario y una contraseña."
+        })
+
     else:
         return render(request, "matricula/login.html")
 

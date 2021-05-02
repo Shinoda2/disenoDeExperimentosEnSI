@@ -208,6 +208,17 @@ form > input {
     opacity: 50%;
 }
 
+#LoginScreen {
+    top: 0;
+    left: 0;
+    width: 220vh;
+    height: 100%;
+    position: absolute;
+    background: url(Background.jpeg);
+    opacity: 100%;
+    z-index: 2;
+}
+
 input[placeholder="Búsqueda"]{
     width: 63%;
     margin-left: 9%;
