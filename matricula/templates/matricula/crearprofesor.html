@@ -8,7 +8,7 @@
     </svg>      
     <h2 id="formTitle">Registrar docente</h2>
 
-    <form action="{% url 'crearprofesor' %}" method="post">        
+    <form action="{% url 'creardocente' %}" method="post">        
         {% csrf_token %}
         <div id="registerForm">
             <div class="form-group row">
@@ -155,7 +155,7 @@
             apellidoState = 1;
         }
         
-        if (txtDNI == "" || hasNumber.test(txtDNI) == false || txtDNI > 99999999 || txtDNI < 10000000) {
+        if (txtDNI == "" || hasNumber.test(txtDNI) == false || txtDNI > 99999999 || txtDNI < 00000001) {
             document.getElementById("errorMessage3").style.display = "";
             document.getElementById("txtDNI").value = "";
         } else {

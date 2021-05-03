@@ -51,7 +51,7 @@ def logout_view(request):
     logout(request)
     return HttpResponseRedirect(reverse("index"))
 
-@user_passes_test(lambda u: u.is_superuser)
+@login_required(login_url='/login')
 def register(request):
     if request.method == "POST":
         username = request.POST["username"]
@@ -207,7 +207,7 @@ def listarAlumnos(request):
 
 
 @login_required(login_url='/login')
-def crearProfesor(request):
+def crearDocente(request):
     if request.method == "POST":
         try:
             Profesor.objects.create(nombre = request.POST["nombre"], apellido = request.POST["apellido"], dni = request.POST["dni"])
