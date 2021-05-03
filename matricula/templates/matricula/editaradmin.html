@@ -12,7 +12,7 @@
         <div>{{ message }}</div>
     {% endif %}
 
-    <form action="{% url 'register' %}" method="post">
+    <form action="{% url 'editaradmin' form.id%}" method="post">
         {% csrf_token %}
         <div id="registerForm">
             <div class="form-group row" style="margin-bottom: 0px;">

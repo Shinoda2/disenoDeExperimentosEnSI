@@ -80,34 +80,44 @@ def register(request):
 
 @login_required(login_url='/login')
 def editarAdmin(request, id):
-    administrador = User.objects.get(id=id)
+    administrador = User.objects.get(id = id)
     if request.method == "POST":
-        if request.POST["username"] == str(administrador.username):
-            administrador.username = request.POST["username"]
-            administrador.first_name = request.POST["first_name"]
-            administrador.last_name = request.POST["last_name"]
-            administrador.email = request.POST["email"]
-            administrador.password = request.POST["password"]
-            confirmation = request.POST["confirmation"]
-            if password != confirmation:
-                return render(request, "matricula/editaradmin.html", {
-                    "message": "Las contraseñas deben coincidir."
-                })
+        User.objects.filter(id=id).update(username = request.POST["username"], email = request.POST["email"], first_name = request.POST["first_name"], last_name = request.POST["last_name"], password = request.POST["password"])
+        #administrador.username = request.POST["username"]
+        #administrador.email = request.POST["email"]
+        #administrador.first_name = request.POST["first_name"]
+        #administrador.last_name = request.POST["last_name"]
 
-            administrador.save()
-            return HttpResponseRedirect("../listaadmins")
+        # Ensure password matches confirmation
+        #administrador.password = request.POST["password"]
+        confirmation = request.POST["confirmation"]
+        
+        if request.POST["password"] != confirmation:
+            return render(request, "matricula/editaradmin.html", {
+                "message": "Las contraseñas deben coincidir."
+            })
         else:
-            try:
-                User.objects.update(username = request.POST["username"], first_name = request.POST["first_name"], last_name = request.POST["last_name"], email = request.POST["email"], password = request.POST["password"])
-                return HttpResponseRedirect("../listaadmins")
-            except:
-                mensaje = "error"
-                return render(request, "matricula/editaradmin.html", {'admins': User.objects.all(), 'form':administrador, 'mensaje':mensaje})
-            
-    return render(request, "matricula/editaradmin.html", {'admins': User.objects.all(), 'form':administrador,})
+            #administrador.save()
+            return HttpResponseRedirect(reverse("listaadmins"))
+
+        # Attempt to create new user
+        try:
+            user = User.objects.update(username, email, password)
+            user.first_name = first_name
+            user.last_name = last_name
+            user.save()
+        except IntegrityError:
+            return render(request, "matricula/register.html", {
+                "message": "El usuario ingresado ya se encuentra registrado."
+            })
+        return HttpResponseRedirect(reverse("register"))
+    else:
+        return render(request, "matricula/editaradmin.html", {'admins': User.objects.all(), 'form':administrador})
+    
 
 @login_required(login_url='/login')
 def listarAdmins(request):
+    
     return render(request, "matricula/listaadmins.html", {'admins': User.objects.all()})
 
 @login_required(login_url='/login')
