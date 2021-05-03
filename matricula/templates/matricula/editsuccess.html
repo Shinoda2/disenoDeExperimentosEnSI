@@ -1,0 +1,49 @@
+{% extends "matricula/layout.html" %}
+
+{% block body %}
+
+<div id="Form" style="width: 50%; margin-left: 25%; margin-top: 10%;">
+    <svg id="exitForm" xmlns="http://www.w3.org/2000/svg" width="15.849" height="15.848" viewBox="0 0 30.849 30.848" onclick="changeWindow()">
+    <path id="Icon_metro-cross" data-name="Icon metro-cross" d="M33.138,26.711h0l-9.358-9.358,9.358-9.358h0a.966.966,0,0,0,0-1.363L28.717,2.21a.967.967,0,0,0-1.363,0h0L18,11.568,8.637,2.21h0a.966.966,0,0,0-1.363,0L2.852,6.631a.966.966,0,0,0,0,1.363h0l9.358,9.358L2.852,26.711h0a.966.966,0,0,0,0,1.363l4.421,4.421a.966.966,0,0,0,1.363,0h0L18,23.136l9.358,9.358h0a.966.966,0,0,0,1.363,0l4.421-4.421a.966.966,0,0,0,0-1.363Z" transform="translate(-2.571 -1.928)" fill="#b7b7b7"/>
+    </svg>      
+    <h2 style="margin-left: 27%;">Actualización Exitosa</h2>
+    <form method="POST">        
+        {% csrf_token %}        
+        <div id="confirmationMessage" class="row">
+                
+        </div>
+        <div style="margin-left: 31%; width: 50%;">
+            <input style="margin-left: 21%; margin-top: 15%;" id="btnRegister" class="btn btn-success col-sm-4" value="ACEPTAR" onclick="changeWindow()">
+        </div>
+    </form>
+</div>
+<div id="blackScreen" style="opacity: 80%;"></div>
+{% if cursos %}
+<script>
+    var changeWindow = () => {
+        window.location.pathname = '../listacursos';
+    }
+</script>
+{% endif %}
+{% if docentes %}
+<script>
+    var changeWindow = () => {
+        window.location.pathname = '../listadocentes';
+    }
+</script>
+{% endif %}
+{% if alumnos %}
+<script>
+    var changeWindow = () => {
+        window.location.pathname = '../listaalumno';
+    }
+</script>
+{% endif %}
+{% if admins %}
+<script>
+    var changeWindow = () => {
+        window.location.pathname = '../listaadmins';
+    }
+</script>
+{% endif %}
+{% endblock %}

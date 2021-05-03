@@ -82,6 +82,18 @@ def register(request):
         return render(request, "matricula/register.html", {'admins': User.objects.all()})
 
 @login_required(login_url='/login')
+def successAdmin(request):
+    return render(request, "matricula/createsuccess.html", {
+        'admins': User.objects.all(), 
+        })
+
+@login_required(login_url='/login')
+def editsuccessAdmin(request):
+    return render(request, "matricula/editsuccess.html", {
+        'admins': User.objects.all(), 
+        })
+
+@login_required(login_url='/login')
 def editarAdmin(request, id):
     administrador = User.objects.get(id = id)
     if request.method == "POST":
@@ -125,7 +137,7 @@ def desactivarAdmin(request, id):
             administrador.is_active = True
 
         administrador.save()
-        return HttpResponseRedirect("../listaadmins")
+        return HttpResponseRedirect("../editsuccess/admin")
     return render(request, "matricula/desactivaradmin.html", {'admins': User.objects.all(), 'form':administrador})
 
 @login_required(login_url='/login')
@@ -134,13 +146,25 @@ def crearAlumno(request):
         try:
             Alumno.objects.create(nombre = request.POST["nombre"], apellido = request.POST["apellido"], dni = request.POST["dni"])
         
-            return HttpResponseRedirect("listaalumnos")
+            return HttpResponseRedirect("createsuccess/alumno")
         except:
             errorCrear = "El dni utilizado ya se encuentra registrado."
             return render(request, "matricula/crearalumno.html", {'alumnos': Alumno.objects.all(), 'errorcrear': errorCrear})
         
 
     return render(request, "matricula/crearalumno.html", {'alumnos': Alumno.objects.all()})
+
+@login_required(login_url='/login')
+def successAlumno(request):
+    return render(request, "matricula/createsuccess.html", {
+        'alumnos': Alumno.objects.all(), 
+        })
+
+@login_required(login_url='/login')
+def editsuccessAlumno(request):
+    return render(request, "matricula/editsuccess.html", {
+        'alumnos': Alumno.objects.all(), 
+        })
 
 @login_required(login_url='/login')
 def editarAlumno(request, id):
@@ -151,7 +175,7 @@ def editarAlumno(request, id):
             alumno.apellido = request.POST["apellido"]
             alumno.dni = request.POST["dni"]
             alumno.save()
-            return HttpResponseRedirect("../listaalumnos")
+            return HttpResponseRedirect("../editsuccess/alumno")
         else:
             try:
                 Alumno.objects.update(nombre = request.POST["nombre"], apellido = request.POST["apellido"], dni = request.POST["dni"])
@@ -173,7 +197,7 @@ def desactivarAlumno(request, id):
             alumno.activo = True
 
         alumno.save()
-        return HttpResponseRedirect("../listaalumnos")
+        return HttpResponseRedirect("../editsuccess/alumno")
 
     return render(request, "matricula/desactivaralumno.html", {'alumnos': Alumno.objects.all(), 'form':alumno})
 
@@ -187,13 +211,25 @@ def crearProfesor(request):
     if request.method == "POST":
         try:
             Profesor.objects.create(nombre = request.POST["nombre"], apellido = request.POST["apellido"], dni = request.POST["dni"])
-            return HttpResponseRedirect("listadocentes")
+            return HttpResponseRedirect("createsuccess/docente")
         except:
             errorCrear = "El dni utilizado ya se encuentra registrado."
             return render(request, "matricula/crearprofesor.html", {'docentes': Profesor.objects.all(), 'errorcrear': errorCrear})
         
 
     return render(request, "matricula/crearprofesor.html", {'docentes': Profesor.objects.all()})
+
+@login_required(login_url='/login')
+def successDocente(request):
+    return render(request, "matricula/createsuccess.html", {
+        'docentes': Profesor.objects.all(), 
+        })
+
+@login_required(login_url='/login')
+def editsuccessDocente(request):
+    return render(request, "matricula/editsuccess.html", {
+        'docentes': Profesor.objects.all(), 
+        })
 
 @login_required(login_url='/login')
 def editarDocente(request, id):
@@ -207,6 +243,7 @@ def editarDocente(request, id):
             docente.dni = request.POST["dni"]   
 
             docente.save()
+            return HttpResponseRedirect("../editsuccess/docente")
         else:
             try:
                 Profesor.objects.update(nombre = request.POST["nombre"], apellido = request.POST["apellido"], dni = request.POST["dni"])
@@ -227,7 +264,7 @@ def desactivarDocente(request, id):
             docente.activo = True
 
         docente.save()
-        return HttpResponseRedirect("../listadocentes")
+        return HttpResponseRedirect("../editsuccess/docente")
 
     return render(request, "matricula/desactivardocente.html", {'docentes': Profesor.objects.all(), 'form':docente})
 
@@ -241,7 +278,7 @@ def crearCurso(request):
         try:
             Curso.objects.create(nombreCurso = request.POST["nombreCurso"], profesor = Profesor.objects.get(dni = int(request.POST["profesor"])), vacantes = request.POST["vacantes"], activo = True)  
 
-            return HttpResponseRedirect("listacursos")
+            return HttpResponseRedirect("createsuccess/curso")
         except:
             errorCrear = "El curso ingresado ya se encuentra registrado."
             return render(request, "matricula/crearcurso.html", {
@@ -255,6 +292,18 @@ def crearCurso(request):
         })
 
 @login_required(login_url='/login')
+def successCurso(request):
+    return render(request, "matricula/createsuccess.html", {
+        'cursos': Curso.objects.all(), 
+        })
+
+@login_required(login_url='/login')
+def editsuccessCurso(request):
+    return render(request, "matricula/editsuccess.html", {
+        'cursos': Curso.objects.all(), 
+        })
+
+@login_required(login_url='/login')
 def editarCurso(request, id):
     curso = Curso.objects.get(id=id)   
     if request.method == "POST":
@@ -264,7 +313,7 @@ def editarCurso(request, id):
             curso.vacantes = request.POST["vacantes"]   
             
             curso.save()
-            return HttpResponseRedirect("../listacursos")
+            return HttpResponseRedirect("../editsuccess/curso")
         except:
             mensaje: "error"
             return render(request, "matricula/editarcurso.html", {'profesores': Profesor.objects.all(), 'cursos': curso.objects.all(), 'form':curso, 'mensaje':mensaje})
@@ -281,7 +330,7 @@ def desactivarCurso(request, id):
             curso.activo = True
 
         curso.save()
-        return HttpResponseRedirect("../listacursos")
+        return HttpResponseRedirect("../editsuccess/curso")
 
     return render(request, "matricula/desactivarcurso.html", {'cursos': Curso.objects.all(), 'form':curso})
 
