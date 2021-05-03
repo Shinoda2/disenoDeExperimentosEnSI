@@ -86,7 +86,11 @@ def editarAdmin(request, id):
     administrador = User.objects.get(id = id)
     if request.method == "POST":
         
-        User.objects.filter(id=id).update(username = request.POST["username"], email = request.POST["email"], first_name = request.POST["first_name"], last_name = request.POST["last_name"])
+        #User.objects.filter(id=id).update(username = request.POST["username"], email = request.POST["email"], first_name = request.POST["first_name"], last_name = request.POST["last_name"], password = request.POST["password"])
+        administrador.username = request.POST["username"]
+        administrador.email = request.POST["email"]
+        administrador.first_name = request.POST["first_name"]
+        administrador.last_name = request.POST["last_name"]
         administrador.set_password(request.POST["password"])
         administrador.save()
 
@@ -98,6 +102,7 @@ def editarAdmin(request, id):
             })
         else:
             #administrador.save()
+            
             return HttpResponseRedirect(reverse("listaadmins"))
 
         # Attempt to create new user
