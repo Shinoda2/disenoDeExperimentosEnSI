@@ -9,6 +9,9 @@ import json
 from django.views.decorators.csrf import csrf_exempt
 from django.core.paginator import Paginator
 from django.contrib.auth.decorators import user_passes_test
+from django.shortcuts import get_object_or_404
+from django.contrib.auth.hashers import *
+
 
 import datetime
 
@@ -82,14 +85,11 @@ def register(request):
 def editarAdmin(request, id):
     administrador = User.objects.get(id = id)
     if request.method == "POST":
-        User.objects.filter(id=id).update(username = request.POST["username"], email = request.POST["email"], first_name = request.POST["first_name"], last_name = request.POST["last_name"], password = request.POST["password"])
-        #administrador.username = request.POST["username"]
-        #administrador.email = request.POST["email"]
-        #administrador.first_name = request.POST["first_name"]
-        #administrador.last_name = request.POST["last_name"]
+        
+        User.objects.filter(id=id).update(username = request.POST["username"], email = request.POST["email"], first_name = request.POST["first_name"], last_name = request.POST["last_name"])
+        administrador.set_password(request.POST["password"])
+        administrador.save()
 
-        # Ensure password matches confirmation
-        #administrador.password = request.POST["password"]
         confirmation = request.POST["confirmation"]
         
         if request.POST["password"] != confirmation:
@@ -101,16 +101,6 @@ def editarAdmin(request, id):
             return HttpResponseRedirect(reverse("listaadmins"))
 
         # Attempt to create new user
-        try:
-            user = User.objects.update(username, email, password)
-            user.first_name = first_name
-            user.last_name = last_name
-            user.save()
-        except IntegrityError:
-            return render(request, "matricula/register.html", {
-                "message": "El usuario ingresado ya se encuentra registrado."
-            })
-        return HttpResponseRedirect(reverse("register"))
     else:
         return render(request, "matricula/editaradmin.html", {'admins': User.objects.all(), 'form':administrador})
     
