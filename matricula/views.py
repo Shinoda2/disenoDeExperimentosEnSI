@@ -308,15 +308,19 @@ def editarCurso(request, id):
     curso = Curso.objects.get(id=id)   
     if request.method == "POST":
         try:
-            curso.nombreCurso = request.POST["nombreCurso"]
-            curso.profesor = Profesor.objects.get(dni = int(request.POST["profesor"]))
-            curso.vacantes = request.POST["vacantes"]   
-            
-            curso.save()
+            Curso.objects.filter(id = id).update(nombreCurso = request.POST["nombreCurso"], profesor = Profesor.objects.get(dni = int(request.POST["profesor"])), vacantes = request.POST["vacantes"])
+            #curso.nombreCurso = request.POST["nombreCurso"]
+            #curso.profesor = Profesor.objects.get(dni = int(request.POST["profesor"]))
+            #curso.vacantes = request.POST["vacantes"]   
+            #curso.save()
             return HttpResponseRedirect("../editsuccess/curso")
         except:
-            mensaje: "error"
-            return render(request, "matricula/editarcurso.html", {'profesores': Profesor.objects.all(), 'cursos': curso.objects.all(), 'form':curso, 'mensaje':mensaje})
+            errorCrear = "El curso ingresado ya se encuentra registrado."
+            return render(request, "matricula/editarcurso.html", {
+            'profesores': Profesor.objects.all(), 
+            'cursos': Curso.objects.all(),
+            'errorcrear': errorCrear
+            })
 
     return render(request, "matricula/editarcurso.html", {'profesores': Profesor.objects.all(), 'cursos': Curso.objects.all(), 'form':curso})
 
