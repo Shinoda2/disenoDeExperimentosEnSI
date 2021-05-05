@@ -324,7 +324,7 @@ def editarCurso(request, id):
             #curso.save()
             return HttpResponseRedirect("../editsuccess/curso")
         except:
-            errorCrear = "El curso ingresado ya se encuentra registrado."
+            errorCrear = "El nombre de curso ingresado ya se encuentra registrado."
             return render(request, "matricula/editarcurso.html", {
             'profesores': Profesor.objects.all(), 
             'cursos': Curso.objects.all(),
