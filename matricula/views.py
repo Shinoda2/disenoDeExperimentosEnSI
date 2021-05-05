@@ -98,26 +98,33 @@ def editsuccessAdmin(request):
 def editarAdmin(request, id):
     administrador = User.objects.get(id = id)
     if request.method == "POST":
-        
-        #User.objects.filter(id=id).update(username = request.POST["username"], email = request.POST["email"], first_name = request.POST["first_name"], last_name = request.POST["last_name"], password = request.POST["password"])
-        administrador.username = request.POST["username"]
-        administrador.email = request.POST["email"]
-        administrador.first_name = request.POST["first_name"]
-        administrador.last_name = request.POST["last_name"]
-        administrador.set_password(request.POST["password"])
-        administrador.save()
-        return HttpResponseRedirect("../editsuccess/admin")
-
-        confirmation = request.POST["confirmation"]
-        
-        if request.POST["password"] != confirmation:
-            return render(request, "matricula/editaradmin.html", {
-                "message": "Las contraseñas deben coincidir."
-            })
-        else:
-            #administrador.save()
+        try:
+            #User.objects.filter(id=id).update(username = request.POST["username"], email = request.POST["email"], first_name = request.POST["first_name"], last_name = request.POST["last_name"], password = request.POST["password"])
+            administrador.username = request.POST["username"]
+            administrador.email = request.POST["email"]
+            administrador.first_name = request.POST["first_name"]
+            administrador.last_name = request.POST["last_name"]
+            administrador.set_password(request.POST["password"])
+            administrador.save()
             
-            return HttpResponseRedirect(reverse("listaadmins"))
+
+            confirmation = request.POST["confirmation"]
+            
+            if request.POST["password"] != confirmation:
+                return render(request, "matricula/editaradmin.html", {
+                    "message": "Las contraseñas deben coincidir."
+                })
+            else:
+                #administrador.save()
+                
+                return HttpResponseRedirect("../editsuccess/admin")
+        except:
+            errorCrear = "El usuario ingresado ya se encuentra registrado."
+            return render(request, "matricula/editaradmin.html", {
+            'admins': User.objects.all(),
+            'form':administrador,
+            'errorcrear': errorCrear
+            })
 
         # Attempt to create new user
     else:
