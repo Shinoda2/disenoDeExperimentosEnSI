@@ -37,6 +37,7 @@ urlpatterns = [
     path('createsuccess/docente', views.successDocente, name='createsucessdocente'),
     path('createsuccess/alumno', views.successAlumno, name='createsucessalumno'),
     path('createsuccess/admin', views.successAdmin, name='createsucessadmin'),
+    path('createsuccess/matricula', views.successMatricula, name='createsucessmatricula'),
 
     path('editsuccess/curso', views.editsuccessCurso, name='editsucesscurso'),
     path('editsuccess/docente', views.editsuccessDocente, name='editsucessdocente'),

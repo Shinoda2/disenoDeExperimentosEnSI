@@ -46,4 +46,11 @@
     }
 </script>
 {% endif %}
+{% if matriculas %}
+<script>
+    var changeWindow = () => {
+        window.location.pathname = '../listamatriculas';
+    }
+</script>
+{% endif %}
 {% endblock %}

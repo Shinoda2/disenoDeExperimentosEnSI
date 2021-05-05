@@ -73,6 +73,7 @@ def register(request):
             user.first_name = first_name
             user.last_name = last_name
             user.save()
+            return HttpResponseRedirect("../createsuccess/admin")
         except IntegrityError:
             return render(request, "matricula/register.html", {
                 "message": "El usuario ingresado ya se encuentra registrado."
@@ -105,6 +106,7 @@ def editarAdmin(request, id):
         administrador.last_name = request.POST["last_name"]
         administrador.set_password(request.POST["password"])
         administrador.save()
+        return HttpResponseRedirect("../editsuccess/admin")
 
         confirmation = request.POST["confirmation"]
         
@@ -319,6 +321,7 @@ def editarCurso(request, id):
             return render(request, "matricula/editarcurso.html", {
             'profesores': Profesor.objects.all(), 
             'cursos': Curso.objects.all(),
+            'form':curso,
             'errorcrear': errorCrear
             })
 
@@ -364,8 +367,8 @@ def matricularAlumno(request):
 
         try:
             if len(listaalumnos) < objCurso.vacantes :            
-                obj.save()
-                return HttpResponseRedirect("listamatriculas")
+                obj.save()        
+                return HttpResponseRedirect("createsuccess/matricula")
         #     return render(request, "matricula/matricularalumno.html", {
         #     'cursos': Curso.objects.all(),
         #     'alumnos': Alumno.objects.all()
@@ -411,6 +414,12 @@ def listarMatriculas(request, semestre):
 
 
 @login_required(login_url='/login')
+def successMatricula(request):
+    return render(request, "matricula/createsuccess.html", {
+        'matriculas': DetalleMatricula.objects.all(), 
+        })
+
+@login_required(login_url='/login')
 def listarMatriculasTotales(request):
     matricula = DetalleMatricula.objects.all()
     listacurso = []
@@ -433,4 +442,3 @@ def reporteMatricula(request,semestre, id):
             listaalumnos.append(obj.alumno)
 
     return render(request, "matricula/reportematricula.html", {'matricula': obj, 'alumnos': listaalumnos})
-    
