@@ -176,7 +176,7 @@
             apellidoState = 1;
         }
 
-        if (txtContraseña == "" || txtContraseña.length < 8 || txtContraseña.length > 8 || !hasNumber.test(txtContraseña) || !hasLetter.test(txtContraseña)){
+        if (txtContraseña == "" || txtContraseña.length < 8 || !hasNumber.test(txtContraseña) || !hasLetter.test(txtContraseña)){
             document.getElementById("errorMessage4").style.display = "";
             document.getElementById("txtContraseña").value = "";
             document.getElementById("txtConfirmacion").value = "";
