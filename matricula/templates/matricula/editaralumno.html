@@ -78,7 +78,7 @@
                 <td scope="row">
                     {{alumno.apellido}} 
                 </td>
-                <td scope="row">
+                <td class="dni" scope="row">
                     {{alumno.dni}} 
                 </td>
                 <td scope="row">
@@ -108,6 +108,52 @@
 </script>
 {% endif %}
 <div id="warningList"></div>
+<script>
+    var elements = document.getElementsByClassName("dni");
+    for(let x = 0; x<=elements.length; x++){
+        //console.log(JSON.stringify(document.getElementsByClassName("dni")[x].innerHTML))
+        var dni = document.getElementsByClassName("dni")[x].innerHTML;
+        if(document.getElementsByClassName("dni")[x].innerHTML.length < 47){
+            
+            var cantidadNumeros = document.getElementsByClassName("dni")[x].innerHTML.length;
+            if(cantidadNumeros <= 46){
+                document.getElementsByClassName("dni")[x].innerHTML = ("0"+dni)
+                var spliteado = document.getElementsByClassName("dni")[x].innerHTML.split("\n                    ");
+                document.getElementsByClassName("dni")[x].innerHTML = spliteado[0]+spliteado[1]
+            }
+            else if(cantidadNumeros <=45){
+                document.getElementsByClassName("dni")[x].innerHTML = ("00"+dni)
+                var spliteado = document.getElementsByClassName("dni")[x].innerHTML.split("\n                    ");
+                document.getElementsByClassName("dni")[x].innerHTML = spliteado[0]+spliteado[1]
+            }
+            else if(cantidadNumeros <=44){
+                document.getElementsByClassName("dni")[x].innerHTML = ("000"+dni)
+                var spliteado = document.getElementsByClassName("dni")[x].innerHTML.split("\n                    ");
+                document.getElementsByClassName("dni")[x].innerHTML = spliteado[0]+spliteado[1]
+            }
+            else if(cantidadNumeros <=43){
+                document.getElementsByClassName("dni")[x].innerHTML = ("0000"+dni)
+                var spliteado = document.getElementsByClassName("dni")[x].innerHTML.split("\n                    ");
+                document.getElementsByClassName("dni")[x].innerHTML = spliteado[0]+spliteado[1]
+            }
+            else if(cantidadNumeros <=42){
+                document.getElementsByClassName("dni")[x].innerHTML = ("00000"+dni)
+                var spliteado = document.getElementsByClassName("dni")[x].innerHTML.split("\n                    ");
+                document.getElementsByClassName("dni")[x].innerHTML = spliteado[0]+spliteado[1]
+            }
+            else if(cantidadNumeros <=41){
+                document.getElementsByClassName("dni")[x].innerHTML = ("000000"+dni)
+                var spliteado = document.getElementsByClassName("dni")[x].innerHTML.split("\n                    ");
+                document.getElementsByClassName("dni")[x].innerHTML = spliteado[0]+spliteado[1]
+            }
+            else if(cantidadNumeros <=40){
+                document.getElementsByClassName("dni")[x].innerHTML = ("0000000"+dni)
+                var spliteado = document.getElementsByClassName("dni")[x].innerHTML.split("\n                    ");
+                document.getElementsByClassName("dni")[x].innerHTML = spliteado[0]+spliteado[1]
+            }
+        }
+    }
+</script>
 <script>
     const changeWindow = () => {
         window.location.pathname = '../listaalumnos';
