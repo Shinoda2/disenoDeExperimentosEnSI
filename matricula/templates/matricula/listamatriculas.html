@@ -32,14 +32,14 @@
         <tbody>
             {% for curso in cursos %}
             <tr>
-                <td scope="row">
+                <td class="id" scope="row">
                     {{curso.id}}
                 </td>
                 <td scope="row">
                     {{curso.nombreCurso}}                   
                 </td>
-                <td scope="row">
-                    {{curso.vacantes}} 
+                <td class="vacan" scope="row">
+                    {{curso.vacantes}}
                 </td>  
                 <td scope="row">
                     {% if semestre %}
@@ -54,6 +54,17 @@
             {% endfor %}                                              
         </tbody>
     </table>
+    <script>
+        var vacantes = {{vacante}}
+        var elements = document.getElementsByClassName("id");
+        var ids = '';
+        for (let x = 0; x<=elements.length; x++){
+            if(document.getElementsByClassName("id")[x].innerText == x+1){
+                document.getElementsByClassName("vacan")[x].innerText = (10 - vacantes[x+1])
+            }
+        }
+    </script>
+    
 </div>
 <div id="warningList"></div>
 <script>

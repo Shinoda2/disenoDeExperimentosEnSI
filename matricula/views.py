@@ -410,14 +410,26 @@ def matricularAlumno(request):
 @login_required(login_url='/login')
 def listarMatriculas(request, semestre):
     matricula = DetalleMatricula.objects.all().filter(semestre=semestre)
+    vacantes = []
     semestre = semestre
     listacurso = []
     for obj in matricula:
         listacurso.append(obj.curso)
-
+        vacantes.append(obj.curso.id)
+        
+        
+    #vacantesRestantes = 10-vacantesLlenas
     lista = {i:listacurso.count(i) for i in listacurso}
-    listacurso = list(dict.fromkeys(listacurso))    
-    return render(request, "matricula/listamatriculas.html", {'cursos': lista, 'semestre':semestre})
+    vacante = {i:vacantes.count(i) for i in vacantes}
+    for x in range(len(lista)):
+        vacantesLlenas = DetalleMatricula.objects.filter(semestre=semestre, curso = x+1).count()
+        vacantes.append(vacantesLlenas)
+    listacurso = list(dict.fromkeys(listacurso))
+    #vacantesLlenas = len(lista)
+    
+
+    
+    return render(request, "matricula/listamatriculas.html", {'cursos': lista, 'semestre':semestre, 'vacante':vacante})
 
 
 @login_required(login_url='/login')
