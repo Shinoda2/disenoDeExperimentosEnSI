@@ -2,11 +2,9 @@
 
 {% block body %}
 <!-- buscar y registrar nuevo -->
-<div style="margin-left: 31%; margin-bottom: 30px;">
-    <h1 style="font-size: 40px;">Administradores registrados</h1>
-</div>
+<h1 id="HeadTitleList" style="font-size: 40px;">Usuarios registrados</h1>
 <input id="buscar" type="text" placeholder="Búsqueda por usuario" class="form-control" style="width: 65%; display: inline; margin-left: 10%;">
-<button id="options" class="btn btn-success" onclick="changeWindow()">NUEVO ADMINISTRADOR</button>
+<button id="options" class="btn btn-success" onclick="changeWindow()">NUEVO USUARIO</button>
 </div>
 <!-- tabla de datos -->
 <div>
@@ -17,7 +15,7 @@
                     Usuario
                 </th>
                 <th scope="col">
-                    Nombre del administrador
+                    Nombre del usuario
                 </th>                
                 <th scope="col">
                     Visibilidad

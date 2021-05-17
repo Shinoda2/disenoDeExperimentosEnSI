@@ -40,7 +40,7 @@
                <li><svg xmlns="http://www.w3.org/2000/svg" width="40.55" height="30.079" viewBox="0 0 72.55 56.079">
                 <path id="Icon_material-people" data-name="Icon material-people" d="M50.966,31.534c5.474,0,9.86-5.368,9.86-12.017S56.44,7.5,50.966,7.5s-9.893,5.368-9.893,12.017S45.492,31.534,50.966,31.534Zm-26.382,0c5.474,0,9.86-5.368,9.86-12.017S30.058,7.5,24.584,7.5s-9.893,5.368-9.893,12.017S19.11,31.534,24.584,31.534Zm0,8.011C16.9,39.545,1.5,44.232,1.5,53.565V63.579H47.668V53.565C47.668,44.232,32.268,39.545,24.584,39.545Zm26.382,0a31.778,31.778,0,0,0-3.2.2,17.909,17.909,0,0,1,6.5,13.819V63.579H74.05V53.565C74.05,44.232,58.649,39.545,50.966,39.545Z" transform="translate(-1.5 -7.5)" fill="#919191"/>
               </svg>
-              <a class="nav-link" href="{% url 'listaadmins'%}">Administradores</a>
+              <a class="nav-link" href="{% url 'listaadmins'%}">Usuarios</a>
             </li>
                 
             </ul>
@@ -49,7 +49,7 @@
                 <div class="line2"></div>
                 <div class="line3"></div>
             </div>                
-            <div style="margin-left: 91%; cursor: pointer;" class="dropdown show">                
+            <div style="position:relative; cursor: pointer; left: 91%;" class="dropdown show">                
                 <a class="btn dropdown-toggle" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     <svg xmlns="http://www.w3.org/2000/svg" width="37" height="37" viewBox="0 0 67 67">
                         <path style="display: inline;" id="Icon_awesome-user-circle" data-name="Icon awesome-user-circle" d="M33.5.563A33.5,33.5,0,1,0,67,34.063,33.494,33.494,0,0,0,33.5.563Zm0,12.968A11.887,11.887,0,1,1,21.613,25.417,11.887,11.887,0,0,1,33.5,13.53ZM33.5,60a25.885,25.885,0,0,1-19.789-9.213,15.061,15.061,0,0,1,13.305-8.078,3.305,3.305,0,0,1,.959.149,17.885,17.885,0,0,0,5.525.932,17.817,17.817,0,0,0,5.525-.932,3.305,3.305,0,0,1,.959-.149,15.061,15.061,0,0,1,13.305,8.078A25.885,25.885,0,0,1,33.5,60Z" transform="translate(0 -0.563)" fill="#fff"/>
@@ -64,10 +64,10 @@
             </div>
         </nav> 
 
-        <style>#greeting{margin: 10px; font-size: 20px; margin-top: 5%;}</style>
+        <style>#greeting{margin: 10px; font-size: 20px; margin-top: 10vh; position: static;}</style>
         <div id="greeting">
             {% if user.is_authenticated %}
-                Bienvenido administrador,  <strong>{{ user.username }}</strong>.
+                Bienvenido usuario,  <strong>{{ user.username }}</strong>.
             {% else %}
                 Por favor,<a class="nav-link" href="{% url 'login'%}" style="display: inline;">Ingrese al sistema</a>
             {% endif %}

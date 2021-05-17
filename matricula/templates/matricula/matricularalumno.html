@@ -58,7 +58,9 @@
             <input id="btnRegister" class="btn btn-success col-sm-4" type="submit" value="REGISTRAR" style="display: none;" onclick="changeWindow()">
             <!-- <input id="btnAccept" class="btn btn-success col-sm-8" value="ACEPTAR" style="display: none;" onclick="changeWindow()"> -->
         </div>
-        <input id="btnShowConfirmation" class="btn btn-success" value="REGISTRAR" onclick="showConfirmation()" style="margin-left: 35%; margin-top: 14px;">
+        <div id="buttonContainer">
+            <input id="btnShowConfirmation" class="btn btn-success" value="REGISTRAR" onclick="showConfirmation()">
+        </div>
     </form>
 
 </div>
@@ -190,6 +192,6 @@
     }
 </script>
 <style>
-    html, body {margin: 0; height: 100%; overflow: hidden}
+    /* html, body {margin: 0; height: 100%; overflow: hidden} */
 </style>
 {% endblock %}

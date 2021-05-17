@@ -6,7 +6,7 @@
     <svg id="exitForm" xmlns="http://www.w3.org/2000/svg" width="15.849" height="15.848" viewBox="0 0 30.849 30.848" onclick="changeWindow()">
     <path id="Icon_metro-cross" data-name="Icon metro-cross" d="M33.138,26.711h0l-9.358-9.358,9.358-9.358h0a.966.966,0,0,0,0-1.363L28.717,2.21a.967.967,0,0,0-1.363,0h0L18,11.568,8.637,2.21h0a.966.966,0,0,0-1.363,0L2.852,6.631a.966.966,0,0,0,0,1.363h0l9.358,9.358L2.852,26.711h0a.966.966,0,0,0,0,1.363l4.421,4.421a.966.966,0,0,0,1.363,0h0L18,23.136l9.358,9.358h0a.966.966,0,0,0,1.363,0l4.421-4.421a.966.966,0,0,0,0-1.363Z" transform="translate(-2.571 -1.928)" fill="#b7b7b7"/>
     </svg>      
-    <h2 id="formTitle" style="margin-left: 40%;">Matrícula</h2>
+    <h2 id="formTitle">Matrícula</h2>
 
     <form>        
         {% csrf_token %}
@@ -22,7 +22,7 @@
             <div class="form-group row">
                 <p class="col-sm-6">Alumnos</p>
                 <div id="contentAlumnos">
-                    <table id="tabla">
+                    <table id="tabla" class="table" style="width: 100%;">                        
                         <tbody>                            
                             {% for alumno in alumnos %}
                             <tr>
@@ -35,8 +35,10 @@
                     </table>
                 </div>
             </div> 
-        </div>              
-        <input id="btnShowConfirmation" class="btn btn-success" value="ACEPTAR" onclick="changeWindow()" style="margin-left: 35%; margin-top: 14px;">
+        </div>          
+        <div id="buttonContainer">
+        <input id="btnShowConfirmation" class="btn btn-success" value="ACEPTAR" onclick="changeWindow()">
+        </div>    
     </form>
 </div>
 <div id="blackScreen"></div>
@@ -97,8 +99,7 @@
 <style>
     #contentAlumnos {
         height: 100px; 
-        width: 50%;
-        padding: 5px;
+        width: 100%;
         overflow-y: auto; 
         overflow-x: hidden; 
         background-color: white;
