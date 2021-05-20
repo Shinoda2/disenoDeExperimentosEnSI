@@ -48,64 +48,27 @@
                 <div class="line1"></div>
                 <div class="line2"></div>
                 <div class="line3"></div>
-            </div>                
-            <div style="position:relative; cursor: pointer; left: 91%;" class="dropdown show">                
+            </div>    
+            <div>
+                <a href="../">
+                    <img src="../../static/matricula/icon.svg" alt="Pitágoras" width="80px" style="position:relative; left: 20px;">
+                </a>
+            </div>            
+            <div style="position:relative; cursor: pointer; left: 75%;" class="dropdown show">                
                 <a class="btn dropdown-toggle" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="37" height="37" viewBox="0 0 67 67">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 67 67">
                         <path style="display: inline;" id="Icon_awesome-user-circle" data-name="Icon awesome-user-circle" d="M33.5.563A33.5,33.5,0,1,0,67,34.063,33.494,33.494,0,0,0,33.5.563Zm0,12.968A11.887,11.887,0,1,1,21.613,25.417,11.887,11.887,0,0,1,33.5,13.53ZM33.5,60a25.885,25.885,0,0,1-19.789-9.213,15.061,15.061,0,0,1,13.305-8.078,3.305,3.305,0,0,1,.959.149,17.885,17.885,0,0,0,5.525.932,17.817,17.817,0,0,0,5.525-.932,3.305,3.305,0,0,1,.959-.149,15.061,15.061,0,0,1,13.305,8.078A25.885,25.885,0,0,1,33.5,60Z" transform="translate(0 -0.563)" fill="#fff"/>
                     </svg>
+                    <p style="color: white; display: inline;"><strong>{{user.username}}</strong></p>
                 </a>
                 
                 <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                    <a class="dropdown-item" href="../">Inicio</a>
+                    <!-- <a class="dropdown-item disabled"></a> -->
                     <a class="dropdown-item" href="../logout" style="color: red;">Cerrar Sesión</a>
                 </div>
                 </div>             
             </div>
-        </nav> 
-
-        <style>#greeting{margin: 10px; font-size: 20px; margin-top: 10vh; position: static;}</style>
-        <div id="greeting">
-            {% if user.is_authenticated %}
-                Bienvenido usuario,  <strong>{{ user.username }}</strong>.
-            {% else %}
-                Por favor,<a class="nav-link" href="{% url 'login'%}" style="display: inline;">Ingrese al sistema</a>
-            {% endif %}
-        </div>
-        <!-- <ul class="nav">
-            <li class="nav-item">
-                <a class="nav-link" href="{% url 'index' %}">Inicio</a>
-            </li>
-            {% if user.is_authenticated %}
-                <li class="nav-item">
-                    <a class="nav-link" href="{% url 'crearalumno' %}">Registrar Alumno</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="{% url 'creardocente'%}">Registrar Docente</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="{% url 'crearcurso'%}">Registrar Curso</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="{% url 'matricularalumno'%}">Matricular Alumno</a>
-                </li>
-                {% if user.is_superuser %}
-                    <li class="nav-item">
-                        <a class="nav-link" href="{% url 'register'%}">Registrar Nuevo Administrador</a>
-                    </li>
-                {% endif %}
-                <li class="nav-item">
-                    <a class="nav-link" href="{% url 'logout' %}">Log Out</a>
-                </li>
-            {% else %}
-                <li class="nav-item">
-                    <a class="nav-link" href="{% url 'login' %}">Log In</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="{% url 'register' %}">Register</a>
-                </li>
-            {% endif %}
-        </ul> -->
+        </nav>         
         <hr>
         <div style="height: 40px;"></div>
         {% block body %}

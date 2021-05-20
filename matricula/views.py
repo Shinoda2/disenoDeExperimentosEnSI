@@ -429,7 +429,7 @@ def listarMatriculas(request, semestre):
     
 
     
-    return render(request, "matricula/listamatriculas.html", {'cursos': lista, 'semestre':semestre, 'vacante':vacante})
+    return render(request, "matricula/listamatriculas.html", {'cursos': Curso.objects.all(), 'semestre':semestre, 'vacante':vacante})
 
 
 @login_required(login_url='/login')

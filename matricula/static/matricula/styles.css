@@ -8,7 +8,7 @@ p {
     display: flex;
     width: 90%;
     letter-spacing: 2px;
-    font-family: 'Cabin', sans-serif;
+    font-family: 'Segoe UI', sans-serif;
     padding: 15px;
 
 }
@@ -17,12 +17,12 @@ p {
     display: flex;
     align-items: center;
     min-height: 8vh;
-    font-family: 'Cabin', sans-serif;
+    font-family: 'Segoe UI', sans-serif;
     background-color: rgb(56, 175, 255);
     position: fixed;
     top: 0;
     width: 100%;
-    z-index: 1000;
+    z-index: 2;
 }
 
 
@@ -98,7 +98,7 @@ body {
     align-items: center;
     width: 25%;
     transform: translateX(-100%);
-    transition: transform 0.3s ease-in;
+    transition: transform 0.2s ease-in;
     z-index: 200;
     border-top-right-radius: 30px;
     padding-top: 30px;
@@ -177,7 +177,7 @@ body {
     box-shadow: 0 10px 16px -10px #999;
 
     position: absolute;
-    z-index: 3;
+    z-index: 4;
     top: 100px;
 
     /* display: none;
@@ -304,7 +304,7 @@ form > input {
     height: 100%;
     position: absolute;
     background-color: black;
-    z-index: 2;
+    z-index: 3;
     opacity: 50%;
 }
 
@@ -316,7 +316,7 @@ form > input {
         height: 700px;
         position: absolute;
         background-color: black;
-        z-index: 2;
+        z-index: 3;
         opacity: 50%;
     }
 }
@@ -329,7 +329,7 @@ form > input {
     position: absolute;
     background: url(Background.jpeg);
     opacity: 100%;
-    z-index: 2;
+    z-index: 100000;
 }
 
 input[placeholder="Búsqueda"]{
@@ -355,6 +355,14 @@ input[placeholder="Búsqueda"]{
     margin-left: 50%; 
     margin-bottom: -20%;
     color: red;
+}
+
+.conditionsForInput {
+    font-size: x-small; 
+    padding: 0px; 
+    margin-top: -25px;
+    margin-left: 15px;
+    color: grey;
 }
 
 input::-webkit-outer-spin-button,

@@ -1,8 +1,16 @@
 {% extends "matricula/layout.html" %}
 
 {% block body %}
+    <style>#greeting{margin: 10px; font-size: 20px; margin-top: 3px; position: static;}</style>
+    <div id="greeting">
+        {% if user.is_authenticated %}
+            Bienvenido usuario,  <strong>{{ user.username }}</strong>.
+        {% else %}
+            Por favor,<a class="nav-link" href="{% url 'login'%}" style="display: inline;">Ingrese al sistema</a>
+        {% endif %}
+    </div>
 
-    <div id="tableIndex" class="container">
+    <div id="tableIndex" class="container">        
         <div class="row">
         
             <a href="{% url 'listamatriculas'%}">

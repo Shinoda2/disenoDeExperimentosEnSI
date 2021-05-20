@@ -5,7 +5,13 @@
 <h1 id="TitleMatricula"> Matriculas Registradas</h1>
 <div id="OptionDiv">
 <select id="selectDinamico" class="form-control col-sm-1 btn-success" onchange="changeFilter()">
-    <option value="" hidden>Semestre</option> 
+    <option value="" hidden>
+        {% if semestre %}
+            {{semestre}}
+        {% else %}
+            Semestre
+        {% endif %}
+    </option> 
     <option value="2021-01">2021-01</option> 
     <option value="2021-02">2021-02</option> 
     <option value="2022-0">2022-0</option> 
@@ -22,11 +28,15 @@
                 <th scope="col">
                     Id
                 </th>
-                <th scope="col">                
+                <th scope="col" style="text-align: center;">                
                     Nombre del curso                    
                 </th>
-                <th scope="col">
-                    Vacantes
+                <th scope="col" style="text-align: center;">
+                    {% if semestre %}
+                    Vacantes Restantes
+                    {% else %}
+                    Vacantes Totales
+                    {% endif %}
                 </th>                                    
             </tr>
         </thead>
@@ -36,15 +46,15 @@
                 <td class="id" scope="row">
                     {{curso.id}}
                 </td>
-                <td scope="row">
+                <td scope="row" style="text-align: center;">
                     {{curso.nombreCurso}}                   
                 </td>
-                <td class="vacan" scope="row">
+                <td class="vacan" scope="row" style="text-align: center;">
                     {{curso.vacantes}}
                 </td>  
                 <td scope="row">
                     {% if semestre %}
-                    <a href="../reportematricula/{{semestre}}/{{curso.id}}" style="color: black;">
+                    <a class="Report" href="../reportematricula/{{semestre}}/{{curso.id}}" style="color: black;">
                     Ver Reporte
                     </a>                    
                     {% else %}
@@ -55,15 +65,29 @@
             {% endfor %}                                              
         </tbody>
     </table>
-    <script>
-        var vacantes = {{vacante}}
+    <script>     
+        let all = document.getElementsByClassName("Report");
+        document.addEventListener('DOMContentLoaded', function(){ 
+            for (let i = 0; i < all.length; i++) {
+                if(document.getElementsByClassName("vacan")[i].innerText == 10){
+                    console.log(all[i])
+                    all[i].style.display = 'none';
+                }
+            }
+        })
+        console.log(document.getElementsByClassName("vacan"));
+        var vacantes = {{vacante}};
         var elements = document.getElementsByClassName("id");
+        console.log(all)
         var ids = '';
         for (let x = 0; x<=elements.length; x++){
             if(document.getElementsByClassName("id")[x].innerText == x+1){
                 document.getElementsByClassName("vacan")[x].innerText = (10 - vacantes[x+1])
+                if(document.getElementsByClassName("vacan")[x].innerText == 'NaN'){
+                    document.getElementsByClassName("vacan")[x].innerText = 10;                    
+                }
             }
-        }
+        }        
     </script>
     
 </div>
