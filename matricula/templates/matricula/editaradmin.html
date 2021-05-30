@@ -17,7 +17,7 @@
         <div id="registerForm">
             <div class="form-group row" style="margin-bottom: 0px;">
                 <p class="col-sm-6">Usuario</p>
-                <input value="{{form.username}}" id="txtUsuario" class="form-control col-sm-6" autofocus type="text" name="username" placeholder="Nombre de Usuario">
+                <input value="{{form.username}}" id="txtUsuario" class="form-control col-sm-6" autofocus type="text" name="username" placeholder="Usuario">
                 <p id="errorMessage1" class="row errorMessageStyle" style="display: none;">*El dato ingresado no era válido</p>
                 <p class="row errorMessageStyle">{{errorcrear}}</p>
             </div>
@@ -26,12 +26,12 @@
             </div>
             <div class="form-group row" style="margin-bottom: 0px;">
                 <p class="col-sm-6">Nombres</p>
-                <input value="{{form.first_name}}" id="txtNombre" class="form-control col-sm-6" type="text" name="first_name" placeholder="Nombres de Administrador" maxlength="25">
+                <input value="{{form.first_name}}" id="txtNombre" class="form-control col-sm-6" type="text" name="first_name" placeholder="Nombres" maxlength="25">
                 <p id="errorMessage2" class="row errorMessageStyle" style="display: none;">*El dato ingresado no era válido</p>
             </div>
             <div class="form-group row" style="margin-bottom: 0px;">
                 <p class="col-sm-6">Apellidos</p>
-                <input value="{{form.last_name}}" id="txtApellido" class="form-control col-sm-6" type="text" name="last_name" placeholder="Apellidos de Administrador" maxlength="25">
+                <input value="{{form.last_name}}" id="txtApellido" class="form-control col-sm-6" type="text" name="last_name" placeholder="Apellidos" maxlength="25">
                 <p id="errorMessage3" class="row errorMessageStyle" style="display: none;">*El dato ingresado no era válido</p>
             </div>
             <div style="height: 20px;"></div>
@@ -42,7 +42,7 @@
             </div>
             <div class="form-group row" style="margin-bottom: 10px;">
                 <p class="col-sm-6">Confirme su contraseña</p>
-                <input id="txtConfirmacion" class="form-control col-sm-6" type="password" name="confirmation" placeholder="Vuelva escribir su contraseña">
+                <input id="txtConfirmacion" class="form-control col-sm-6" type="password" name="confirmation" placeholder="Confirme su contraseña">
                 <p id="errorMessage5" class="row errorMessageStyle" style="display: none;">*Las contraseñas ingresadas no coinciden</p>
             </div>            
         </div>
