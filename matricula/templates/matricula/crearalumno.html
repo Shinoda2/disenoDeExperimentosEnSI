@@ -201,7 +201,7 @@
             apellidoState = 1;
         }  
         
-        if (txtDNI == "" || hasNumber.test(txtDNI) == false || txtDNI > 99999999 || txtDNI < 00000001) {
+        if (txtDNI == "" || hasNumber.test(txtDNI) == false || txtDNI > 99999999 || txtDNI < 00000001 || txtDNI.length != 8) {            
             document.getElementById("errorMessage3").style.display = "";
             document.getElementById("txtDNI").value = "";            
         } else {
