@@ -153,6 +153,7 @@
         var selectSemestre = select3.options[select3.selectedIndex].text
 
         if (selectCurso == "-- Selecciona un curso --"){ 
+            document.getElementById("errorMessage1").style.display = "none";  
             document.getElementById("errorMessage1").style.display = "";            
         }
         else {
@@ -160,6 +161,7 @@
         }
 
         if (selectAlumno == "-- Selecciona un alumno --"){ 
+            document.getElementById("errorMessage2").style.display = "none";  
             document.getElementById("errorMessage2").style.display = "";            
         }
         else {
@@ -167,6 +169,7 @@
         }
 
         if (selectSemestre == "Selecciona un semestre"){ 
+            document.getElementById("errorMessage3").style.display = "none";
             document.getElementById("errorMessage3").style.display = "";            
         }
         else {

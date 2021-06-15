@@ -132,6 +132,7 @@
         var format = /[`!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?~]/;        
         
         if(txtNombreCurso == ""){
+            document.getElementById("errorMessage1").style.display = "none";
             document.getElementById("errorMessage1").style.display = "";
             document.getElementById("txtNombreCurso").value = "";
         } else {
@@ -139,6 +140,7 @@
         }
 
         if (selectDocente == "-- Selecciona un docente --"){ 
+            document.getElementById("errorMessage2").style.display = "none";  
             document.getElementById("errorMessage2").style.display = "";            
         }
         else {

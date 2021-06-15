@@ -119,6 +119,7 @@
         var format = /[`!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?~]/;        
 
         if (txtUsuario.length < 6 || txtUsuario.length > 9 || format.test(txtUsuario) || txtUsuario == " "){
+            document.getElementById("errorMessage1").style.display = "none";
             document.getElementById("errorMessage1").style.display = "";
             document.getElementById("txtUsuario").value = "";
         } else {
@@ -126,6 +127,7 @@
         }
 
         if (txtNombre == "" || hasNumber.test(txtNombre) || format.test(txtNombre)) {
+            document.getElementById("errorMessage2").style.display = "none";
             document.getElementById("errorMessage2").style.display = "";
             document.getElementById("txtNombre").value = "";
         } else {
@@ -133,6 +135,7 @@
         }
 
         if (txtApellido == "" || hasNumber.test(txtApellido) || format.test(txtApellido)) {
+            document.getElementById("errorMessage3").style.display = "none";
             document.getElementById("errorMessage3").style.display = "";
             document.getElementById("txtApellido").value = "";
         } else {
@@ -140,6 +143,7 @@
         }
 
         if (txtContraseña == "" || txtContraseña.length < 8 || txtContraseña.length > 8 || !hasNumber.test(txtContraseña) || !hasLetter.test(txtContraseña)){
+            document.getElementById("errorMessage4").style.display = "none";
             document.getElementById("errorMessage4").style.display = "";
             document.getElementById("txtContraseña").value = "";
             document.getElementById("txtConfirmacion").value = "";
@@ -148,6 +152,7 @@
         }
 
         if (txtConfirmacion != txtContraseña){
+            document.getElementById("errorMessage5").style.display = "none";
             document.getElementById("errorMessage5").style.display = "";
             document.getElementById("txtContraseña").value = "";
             document.getElementById("txtConfirmacion").value = "";
@@ -165,6 +170,7 @@
         console.log(listaUsuarios);
 
         if(listaUsuarios.includes(txtUsuario)){
+            document.getElementById("errorMessageDuplicate").style.display = "none";
             document.getElementById("errorMessageDuplicate").style.display = "";
             document.getElementById("txtUsuario").value = "";            
         } else {

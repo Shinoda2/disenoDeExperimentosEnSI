@@ -188,6 +188,7 @@
         var format = /[`!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?~]/;        
 
         if (txtNombre == "" || hasNumber.test(txtNombre) || format.test(txtNombre)) {
+            document.getElementById("errorMessage1").style.display = "none";
             document.getElementById("errorMessage1").style.display = "";
             document.getElementById("txtNombre").value = "";
         } else {
@@ -195,6 +196,7 @@
         }
 
         if (txtApellido == "" || hasNumber.test(txtApellido) || format.test(txtApellido)) {
+            document.getElementById("errorMessage2").style.display = "none";
             document.getElementById("errorMessage2").style.display = "";
             document.getElementById("txtApellido").value = "";
         } else {
@@ -202,6 +204,7 @@
         }
         
         if (txtDNI == "" || hasNumber.test(txtDNI) == false || txtDNI > 99999999 || txtDNI < 00000001 || txtDNI.length != 8) {
+            document.getElementById("errorMessage3").style.display = "none";
             document.getElementById("errorMessage3").style.display = "";
             document.getElementById("txtDNI").value = "";
         } else {
@@ -218,6 +221,7 @@
         console.log(listaDNIs);
 
         if(listaDNIs.includes(txtDNI)){
+            document.getElementById("errorMessageDuplicate").style.display = "none";
             document.getElementById("errorMessageDuplicate").style.display = "";
             document.getElementById("txtDNI").value = "";            
         } else {

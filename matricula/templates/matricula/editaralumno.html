@@ -176,6 +176,7 @@
         var format = /[`!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?~]/;        
 
         if (txtNombre == "" || hasNumber.test(txtNombre) || format.test(txtNombre)) {
+            document.getElementById("errorMessage1").style.display = "none";
             document.getElementById("errorMessage1").style.display = "";
             document.getElementById("txtNombre").value = "";
         } else {
@@ -183,6 +184,7 @@
         }
 
         if (txtApellido == "" || hasNumber.test(txtApellido) || format.test(txtApellido)) {
+            document.getElementById("errorMessage2").style.display = "none";
             document.getElementById("errorMessage2").style.display = "";
             document.getElementById("txtApellido").value = "";
         } else {
@@ -190,6 +192,7 @@
         }
         
         if (txtDNI == "" || hasNumber.test(txtDNI) == false || txtDNI > 99999999 || txtDNI < 00000001) {
+            document.getElementById("errorMessage3").style.display = "none";
             document.getElementById("errorMessage3").style.display = "";
             document.getElementById("txtDNI").value = "";
         } else {
